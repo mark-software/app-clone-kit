@@ -8,7 +8,7 @@ Clone any existing app using AI-powered automation. One command to install, one 
 
 ```bash
 # Install into your project
-npx app-clone-kit init
+curl -fsSL https://raw.githubusercontent.com/mark-software/app-clone-kit/main/bin/remote-install.sh | bash
 
 # Start Claude Code and clone an app
 claude
@@ -36,7 +36,7 @@ That's it. Claude researches the app, asks you 4 preference questions, builds a 
 ### One-line install (recommended)
 
 ```bash
-npx app-clone-kit init
+curl -fsSL https://raw.githubusercontent.com/mark-software/app-clone-kit/main/bin/remote-install.sh | bash
 ```
 
 This copies the slash command and phase files into your project:
@@ -60,7 +60,7 @@ This copies the slash command and phase files into your project:
 ### Manual install
 
 ```bash
-git clone https://github.com/youruser/app-clone-kit.git /tmp/app-clone-kit
+git clone https://github.com/mark-software/app-clone-kit.git /tmp/app-clone-kit
 cd your-project
 /tmp/app-clone-kit/bin/install.sh
 ```
@@ -68,7 +68,7 @@ cd your-project
 ### Global install (available in all projects)
 
 ```bash
-npx app-clone-kit init --global
+curl -fsSL https://raw.githubusercontent.com/mark-software/app-clone-kit/main/bin/remote-install.sh | bash -s -- --global
 ```
 
 Installs the `/clone` command to `~/.claude/commands/` so it's available everywhere. Phase files are copied per-project on first run.
@@ -114,7 +114,7 @@ The pipeline runs one Claude Code session per build phase. Sessions are autonomo
 
 **Required:**
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (`npm install -g @anthropic-ai/claude-code`)
-- Node.js 18+
+- Git
 
 **Recommended:**
 - Mobile MCP for automated testing: `claude mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest`
