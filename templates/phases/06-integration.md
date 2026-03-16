@@ -84,7 +84,9 @@ If onboarding exists in the feature map:
 
 ### Step 5: Final walkthrough
 
-Comprehensive MCP walkthrough of every feature:
+For a comprehensive automated QA pass, run `/test-mobile-app` — it auto-generates test flows from `feature-map.json`, delegates each to agents, and produces a consolidated bug report in `docs/qa/`.
+
+For manual walkthrough of every feature:
 
 ```
 FOR EACH FEATURE:

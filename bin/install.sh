@@ -82,6 +82,17 @@ cp "$TEMPLATE_DIR/pipeline.sh" "$CLONE_KIT_DIR/pipeline.sh"
 chmod +x "$CLONE_KIT_DIR/pipeline.sh"
 echo -e "${GREEN}  ✓${NC} Installed pipeline script to ${DIM}.clone-kit/pipeline.sh${NC}"
 
+# ---- Install skills ----
+if [ -d "$TEMPLATE_DIR/skills" ]; then
+    SKILLS_DIR="$TARGET_DIR/.claude/skills"
+    for skill_dir in "$TEMPLATE_DIR/skills/"*/; do
+        skill_name=$(basename "$skill_dir")
+        mkdir -p "$SKILLS_DIR/$skill_name"
+        cp "$skill_dir"* "$SKILLS_DIR/$skill_name/" 2>/dev/null || true
+    done
+    echo -e "${GREEN}  ✓${NC} Installed skills to ${DIM}.claude/skills/${NC}"
+fi
+
 # ---- Add to .gitignore ----
 GITIGNORE="$TARGET_DIR/.gitignore"
 ENTRIES=(
@@ -92,6 +103,7 @@ ENTRIES=(
     "screenshots/"
     ".session-logs/"
     "decompiled/"
+    "docs/qa/"
 )
 
 if [ -f "$GITIGNORE" ]; then

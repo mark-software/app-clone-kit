@@ -57,6 +57,8 @@ AFTER ALL FEATURES:
 
 ## Test Protocol
 
+For standalone QA runs, use `/test-mobile-app` which auto-detects framework and generates test plans from `feature-map.json`.
+
 For each feature, via mobile MCP:
 
 ```
