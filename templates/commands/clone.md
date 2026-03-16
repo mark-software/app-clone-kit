@@ -8,7 +8,7 @@ You are orchestrating a pipeline to clone an existing app. Your job is to handle
 - App website URL
 - Help center / knowledge base URL
 - Feature lists and descriptions
-- Data models and screen structure (from APK if available)
+- Feature surface and screen structure (from APK if available — for discovery, not code copying)
 - Anything findable via web search
 
 ## What you ASK the user (can't be researched):
@@ -56,7 +56,7 @@ Before I start, 4 quick questions:
 1. Tech stack? (KMP/Compose Multiplatform [default], React Native/Expo, Flutter, Native Android, Native iOS)
 2. Test on Android emulator, iOS simulator, or both?
 3. Clone free features only, or include paid features too?
-4. Do you have the APK downloaded locally? (Path if yes - this significantly improves accuracy but isn't required.)
+4. Do you have the APK downloaded locally? (Path if yes — helps discover features and understand how the app works, but isn't required. We don't copy code from it.)
 
 After this I run autonomously and check in only when I need your review."
 
@@ -74,9 +74,9 @@ Skim `research/feature-inventory.json` if you want to add or remove anything, or
 
 If the user approves in any way - proceed immediately.
 
-### Step 5: Run Phase 2 - Decompile (if applicable)
+### Step 5: Run Phase 2 - Feature Discovery via Decompilation (if applicable)
 
-If user provided an APK path, read `.clone-kit/phases/02-decompile.md` and execute.
+If user provided an APK path, read `.clone-kit/phases/02-decompile.md` and execute. This discovers features and how the app works — we don't copy code or styles from it.
 If no APK, skip silently. Do not mention it.
 
 ### Step 6: Run Phase 3 - Feature Map

@@ -53,7 +53,7 @@ Extract common patterns from the feature map. Typical components:
 - Section headers for grouped lists
 
 Set up a basic design system:
-- Color palette (infer from original app if possible)
+- Color palette (pick a fresh, clean palette — don't copy the original app's exact colors)
 - Typography scale
 - Spacing scale (4, 8, 12, 16, 24, 32)
 - Border radius and elevation values
