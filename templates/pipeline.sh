@@ -4,7 +4,7 @@
 # app-clone-kit - Build Runner
 # ============================================================================
 # Runs the automated build phases (4-6) as separate Claude Code sessions.
-# Research/planning phases (1-3) are handled by the /clone slash command.
+# Feature discovery and planning phases (1-3) are handled by the /clone slash command.
 #
 # Usage:
 #   ./.clone-kit/pipeline.sh              Run or resume

@@ -2,7 +2,7 @@
 
 ## Goal
 
-Build a comprehensive feature inventory of the target app using only public sources. No manual app walkthrough required.
+Build a comprehensive feature inventory of the target app using only public sources. No manual app walkthrough required. The goal is to understand *what* the app does so we can build our own clean implementation — likely better than the original.
 
 ## Inputs
 

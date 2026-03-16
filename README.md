@@ -2,7 +2,9 @@
 
 Clone any existing app using AI-powered automation. One command to install, one slash command to start.
 
-**app-clone-kit** reverse-engineers an existing app's features through web research and optional APK decompilation, generates a dependency-ordered build plan, then executes it phase-by-phase with automated testing between each step. Your total hands-on time: ~25 minutes.
+**app-clone-kit** discovers an existing app's features through web research and optional APK decompilation, generates a dependency-ordered build plan, then builds your own clean implementation phase-by-phase with automated testing between each step. Your total hands-on time: ~25 minutes.
+
+> **Philosophy:** Decompilation is for *feature discovery* — understanding what an app does and how it works. We don't copy code, styles, or implementation details verbatim. We use that understanding to build something better with clean, modern architecture.
 
 ## Quick Start
 
@@ -21,7 +23,7 @@ That's it. Claude researches the app, asks you 4 preference questions, builds a 
 
 **Phase 1 - Research:** Claude searches the Play Store, App Store, help centers, review sites, and forums to build a comprehensive feature inventory. You never open the target app.
 
-**Phase 2 - Decompile (optional):** If you provide an APK, jadx decompiles it and Claude extracts the real data models, screen structure, navigation graph, and API endpoints.
+**Phase 2 - Decompile (optional):** If you provide an APK, jadx decompiles it and Claude discovers the app's feature surface — what screens exist, how navigation flows, what data entities are involved, and what API patterns are used. This is purely for understanding *what to build*, not how to copy it.
 
 **Phase 3 - Feature Map:** Research and decompilation data merge into a dependency-ordered build queue. Features are grouped into phases of 2-4, with foundations first and reporting last.
 
@@ -121,7 +123,7 @@ The pipeline runs one Claude Code session per build phase. Sessions are autonomo
 - Android emulator or iOS simulator running
 
 **Optional:**
-- [jadx](https://github.com/skylot/jadx) for APK decompilation: `brew install jadx`
+- [jadx](https://github.com/skylot/jadx) for APK decompilation (feature discovery only): `brew install jadx`
 
 ## How It Works
 
@@ -129,7 +131,7 @@ The key insight is **decomposition + isolation + testing gates**.
 
 Complex apps fail when built in one shot because bugs compound across features. app-clone-kit breaks the problem into small, independently-testable units:
 
-1. **Feature discovery** is automated via web research (and optionally APK reverse engineering)
+1. **Feature discovery** is automated via web research (and optionally APK decompilation for deeper understanding)
 2. **Dependency ordering** ensures nothing is built before its prerequisites
 3. **Each feature is built and tested in isolation** before the next one starts
 4. **Fresh Claude Code sessions per build phase** prevent context bloat

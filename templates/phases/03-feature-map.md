@@ -2,7 +2,7 @@
 
 ## Goal
 
-Merge research and decompilation data into a unified, dependency-ordered feature map and build queue.
+Merge research and decompilation discoveries into a unified, dependency-ordered feature map and build queue. All feature specs should describe *what to build* in our own clean implementation — not replicate the original app's code or architecture.
 
 ## Inputs
 
@@ -20,11 +20,12 @@ Merge research and decompilation data into a unified, dependency-ordered feature
 
 ### Step 1: Merge and reconcile
 
-Cross-reference research with decompilation:
-- Found in both: highest confidence, use decompilation for technical details
-- Research only: include, note implementation is inferred
-- Decompilation only: include, mark `discovered_via_decompilation`
-- Resolve naming conflicts between sources
+Cross-reference research with decompilation discoveries:
+- Found in both: highest confidence, decompilation confirms feature exists and clarifies scope
+- Research only: include, note implementation details will be designed fresh
+- Decompilation only: include, mark `discovered_via_decompilation` (hidden features not marketed publicly)
+- Use clean, descriptive names for our implementation — don't carry over the original app's naming conventions
+- Design our own data models and architecture informed by what we learned, not copied from the source
 
 ### Step 2: Generate unified feature map
 
