@@ -1,0 +1,26 @@
+{
+  "name": "app-clone-kit",
+  "version": "0.1.0",
+  "description": "Clone any existing app using AI-powered automation. One command to install, one slash command to start.",
+  "bin": {
+    "app-clone-kit": "./bin/cli.sh"
+  },
+  "keywords": [
+    "claude-code",
+    "app-clone",
+    "reverse-engineering",
+    "ai-automation",
+    "mobile-app",
+    "code-generation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "files": [
+    "bin/",
+    "templates/"
+  ]
+}

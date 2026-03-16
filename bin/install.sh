@@ -1,0 +1,136 @@
+#!/bin/bash
+
+# ============================================================================
+# app-clone-kit installer
+# Copies phase files, pipeline script, and slash command into target project.
+# ============================================================================
+
+set -e
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+BOLD='\033[1m'
+DIM='\033[2m'
+NC='\033[0m'
+
+# Determine where the templates live (relative to this script)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TEMPLATE_DIR="$SCRIPT_DIR/../templates"
+
+# Determine target
+GLOBAL=false
+TARGET_DIR="$(pwd)"
+
+for arg in "$@"; do
+    case "$arg" in
+        --global|-g)
+            GLOBAL=true
+            ;;
+        --help|-h)
+            echo ""
+            echo "  app-clone-kit install"
+            echo ""
+            echo "  Usage:"
+            echo "    npx app-clone-kit init            Install into current project"
+            echo "    npx app-clone-kit init --global    Install /clone command globally"
+            echo ""
+            exit 0
+            ;;
+    esac
+done
+
+echo ""
+echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${BOLD}  app-clone-kit${NC} ${DIM}installer${NC}"
+echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo ""
+
+# ---- Validate templates exist ----
+if [ ! -d "$TEMPLATE_DIR/phases" ]; then
+    echo -e "${RED}  Error: Template files not found at $TEMPLATE_DIR${NC}"
+    echo -e "${DIM}  This usually means the package wasn't installed correctly.${NC}"
+    exit 1
+fi
+
+# ---- Install slash command ----
+if [ "$GLOBAL" = true ]; then
+    CMD_DIR="$HOME/.claude/commands"
+else
+    CMD_DIR="$TARGET_DIR/.claude/commands"
+fi
+
+mkdir -p "$CMD_DIR"
+cp "$TEMPLATE_DIR/commands/clone.md" "$CMD_DIR/clone.md"
+echo -e "${GREEN}  ✓${NC} Installed /clone command to ${DIM}$CMD_DIR/clone.md${NC}"
+
+# ---- Install phase files and pipeline script ----
+CLONE_KIT_DIR="$TARGET_DIR/.clone-kit"
+mkdir -p "$CLONE_KIT_DIR/phases"
+
+for phase_file in "$TEMPLATE_DIR/phases/"*.md; do
+    filename=$(basename "$phase_file")
+    cp "$phase_file" "$CLONE_KIT_DIR/phases/$filename"
+done
+echo -e "${GREEN}  ✓${NC} Installed 6 phase files to ${DIM}.clone-kit/phases/${NC}"
+
+cp "$TEMPLATE_DIR/pipeline.sh" "$CLONE_KIT_DIR/pipeline.sh"
+chmod +x "$CLONE_KIT_DIR/pipeline.sh"
+echo -e "${GREEN}  ✓${NC} Installed pipeline script to ${DIM}.clone-kit/pipeline.sh${NC}"
+
+# ---- Add to .gitignore ----
+GITIGNORE="$TARGET_DIR/.gitignore"
+ENTRIES=(
+    "progress.json"
+    "test-results.json"
+    "research/"
+    "analysis/"
+    "screenshots/"
+    ".session-logs/"
+    "decompiled/"
+)
+
+if [ -f "$GITIGNORE" ]; then
+    for entry in "${ENTRIES[@]}"; do
+        if ! grep -qF "$entry" "$GITIGNORE" 2>/dev/null; then
+            echo "$entry" >> "$GITIGNORE"
+        fi
+    done
+    echo -e "${GREEN}  ✓${NC} Updated .gitignore"
+else
+    printf '%s\n' "${ENTRIES[@]}" > "$GITIGNORE"
+    echo -e "${GREEN}  ✓${NC} Created .gitignore"
+fi
+
+# ---- Check for prerequisites ----
+echo ""
+echo -e "${BOLD}  Prerequisites:${NC}"
+
+if command -v claude &>/dev/null; then
+    echo -e "  ${GREEN}✓${NC} Claude Code"
+else
+    echo -e "  ${YELLOW}!${NC} Claude Code not found - install: ${DIM}npm install -g @anthropic-ai/claude-code${NC}"
+fi
+
+if command -v jadx &>/dev/null; then
+    echo -e "  ${GREEN}✓${NC} jadx (APK decompilation)"
+else
+    echo -e "  ${DIM}○${NC} jadx not found (optional) - install: ${DIM}brew install jadx${NC}"
+fi
+
+# Check mobile MCP
+if command -v claude &>/dev/null && claude mcp list 2>/dev/null | grep -qi "mobile"; then
+    echo -e "  ${GREEN}✓${NC} Mobile MCP"
+else
+    echo -e "  ${DIM}○${NC} Mobile MCP not found (recommended) - install:"
+    echo -e "    ${DIM}claude mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest${NC}"
+fi
+
+# ---- Done ----
+echo ""
+echo -e "${GREEN}  Done!${NC} Start cloning:"
+echo ""
+echo -e "    ${BOLD}claude${NC}"
+echo -e "    ${BOLD}> /clone ${DIM}<app name>${NC}"
+echo ""
