@@ -33,8 +33,11 @@ for arg in "$@"; do
             echo "  app-clone-kit install"
             echo ""
             echo "  Usage:"
-            echo "    npx app-clone-kit init            Install into current project"
-            echo "    npx app-clone-kit init --global    Install /clone command globally"
+            echo "    ./bin/install.sh              Install into current project"
+            echo "    ./bin/install.sh --global     Install /clone command globally"
+            echo ""
+            echo "  Remote install:"
+            echo "    curl -fsSL https://raw.githubusercontent.com/mark-software/app-clone-kit/main/bin/remote-install.sh | bash"
             echo ""
             exit 0
             ;;

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# CLI entry point for npx app-clone-kit
+# CLI entry point for app-clone-kit
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 case "${1:-}" in
@@ -13,8 +13,8 @@ case "${1:-}" in
         echo "  app-clone-kit - Clone any app with AI automation"
         echo ""
         echo "  Usage:"
-        echo "    npx app-clone-kit init            Install into current project"
-        echo "    npx app-clone-kit init --global    Install /clone command globally"
+        echo "    curl -fsSL https://raw.githubusercontent.com/mark-software/app-clone-kit/main/bin/remote-install.sh | bash"
+        echo "    curl -fsSL ... | bash -s -- --global    Install /clone command globally"
         echo ""
         echo "  After install:"
         echo "    claude"
@@ -23,7 +23,7 @@ case "${1:-}" in
         ;;
     *)
         echo "  Unknown command: $1"
-        echo "  Run 'npx app-clone-kit help' for usage."
+        echo "  Run './bin/cli.sh help' for usage."
         exit 1
         ;;
 esac
