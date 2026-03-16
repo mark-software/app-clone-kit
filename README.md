@@ -12,7 +12,7 @@ npx app-clone-kit init
 
 # Start Claude Code and clone an app
 claude
-> /clone Huckleberry
+> /clone SleepyPanda
 ```
 
 That's it. Claude researches the app, asks you 4 preference questions, builds a plan, and tells you when to run the automated build pipeline.
@@ -79,7 +79,7 @@ Installs the `/clone` command to `~/.claude/commands/` so it's available everywh
 
 ```bash
 claude
-> /clone Huckleberry
+> /clone SleepyPanda
 ```
 
 Claude will:
@@ -168,11 +168,11 @@ your-project/
 ```json
 {
   "target_app": {
-    "name": "Huckleberry",
-    "package_name": "com.huckleberry_labs.app",
-    "play_store_url": "https://play.google.com/store/apps/details?id=com.huckleberry_labs.app",
-    "website": "https://huckleberrycare.com",
-    "help_center": "https://huckleberry.zendesk.com/hc/en-us"
+    "name": "SleepyPanda",
+    "package_name": "com.sleepypanda.app",
+    "play_store_url": "https://play.google.com/store/apps/details?id=com.sleepypanda.app",
+    "website": "https://sleepypanda.example.com",
+    "help_center": "https://sleepypanda.example.com/help"
   },
   "clone_config": {
     "tech_stack": "react-native-expo",
