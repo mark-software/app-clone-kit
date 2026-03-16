@@ -25,6 +25,7 @@ Set up the full project skeleton - data layer, shared components, navigation, pl
 
 Read `config.json` for tech stack. Initialize accordingly:
 
+- **kmp-compose**: Download the JetBrains "Shared UI" Compose Multiplatform template (`curl -L -o template.zip "https://kmp.jetbrains.com/template/download/KMP-App-Template" && unzip template.zip`), then configure with SQLDelight, Koin, Ktor, and Compose Navigation
 - **react-native-expo**: `npx create-expo-app@latest` with TypeScript, expo-router, expo-sqlite
 - **flutter**: `flutter create` with sqflite, provider
 - **android-native**: Gradle project with Room, Navigation Component, Hilt

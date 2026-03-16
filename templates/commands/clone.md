@@ -53,7 +53,7 @@ Ask everything in a single message. Do not spread across multiple turns:
 
 Before I start, 4 quick questions:
 
-1. Tech stack? (React Native/Expo, Flutter, Native Android, Native iOS)
+1. Tech stack? (KMP/Compose Multiplatform [default], React Native/Expo, Flutter, Native Android, Native iOS)
 2. Test on Android emulator, iOS simulator, or both?
 3. Clone free features only, or include paid features too?
 4. Do you have the APK downloaded locally? (Path if yes - this significantly improves accuracy but isn't required.)

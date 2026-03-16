@@ -175,8 +175,8 @@ your-project/
     "help_center": "https://sleepypanda.example.com/help"
   },
   "clone_config": {
-    "tech_stack": "react-native-expo",
-    "language": "typescript",
+    "tech_stack": "kmp-compose",
+    "language": "kotlin",
     "local_first": true,
     "platform_target": "android",
     "excluded_features": [],
@@ -187,7 +187,8 @@ your-project/
 
 ### Supported tech stacks
 
-- `react-native-expo` (TypeScript) - default
+- `kmp-compose` (Kotlin) - default
+- `react-native-expo` (TypeScript)
 - `flutter` (Dart)
 - `android-native` (Kotlin)
 - `ios-native` (Swift)
