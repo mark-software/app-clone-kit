@@ -18,6 +18,7 @@ Fix deferred issues, test cross-feature flows, polish UI, final walkthrough. Tra
 - UI polished
 - Final screenshots
 - `progress.json` updated
+- `CLAUDE.md` (finalized for the completed app)
 
 ## Instructions
 
@@ -133,6 +134,14 @@ Save to `screenshots/final/`.
 - Verify no placeholder screens remain
 - Remove debug logging
 - Resolve or document TODO comments
+- Finalize CLAUDE.md:
+  1. Read the existing CLAUDE.md
+  2. Update **Implemented Features** to reflect the final state of all features (note any that were fixed during integration)
+  3. Update **Known Issues & Deferred Items** — remove resolved items, add any remaining limitations
+  4. Update **Project Structure** if integration changes altered the directory layout
+  5. Add cross-feature integration notes that a future developer should know (e.g., "Dashboard aggregates data from X, Y, Z features" or "Settings changes trigger refresh in all list screens")
+  6. Remove pipeline-specific language (phase numbers, build-queue references, "app-clone-kit" build process details) — the CLAUDE.md should read as documentation for a finished app, not a build log
+  7. Update **Build Pipeline Status** to indicate the build is complete, or remove/replace this section with general development notes
 
 ## Completion
 

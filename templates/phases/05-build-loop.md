@@ -17,6 +17,7 @@ Build each feature from the build queue, test with mobile MCP, proceed only on p
 - `screenshots/` per feature
 - `test-results.json` updated
 - `progress.json` updated
+- `CLAUDE.md` (updated with newly built features)
 
 ## The Loop
 
@@ -114,6 +115,21 @@ FOR EACH PREVIOUSLY-BUILT FEATURE:
 
 Fix regressions before reporting phase complete.
 
+## Update CLAUDE.md
+
+After all features in this build phase pass and regression tests pass, update CLAUDE.md:
+
+1. Read the existing CLAUDE.md
+2. In the **Implemented Features** section, add an entry for each feature built in this phase. For each feature include:
+   - Feature name and one-line description
+   - Key screens (names and what they do)
+   - Notable behaviors or business logic worth knowing
+   - Any non-obvious implementation details a future developer should know
+3. If the **Project Structure** section needs updating (new directories or significant new files were added), update it
+4. If any issues were deferred (logged in test-results.json as `pass_with_issues` or `failed`), add them to **Known Issues & Deferred Items** with a brief description
+5. Do NOT rewrite existing sections — read the file, preserve everything, and only add/modify the specific sections relevant to this build phase
+6. Keep entries concise — one to three lines per feature. This is a reference document, not documentation.
+
 ## Progress Tracking
 
 Update `test-results.json`:
@@ -144,7 +160,8 @@ Each build phase should be a separate Claude Code session. At session start:
 1. Read this file
 2. Read feature-map.json - ONLY entries for current build phase
 3. Read test-results.json and progress.json
-4. Do NOT load full feature map or prior phase docs
+4. Read CLAUDE.md for project context (structure, data models, what's been built so far)
+5. Do NOT load full feature map or prior phase docs
 
 For complex features, use the Task tool to delegate to subagents.
 

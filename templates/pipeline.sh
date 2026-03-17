@@ -92,7 +92,7 @@ do_scaffold() {
     header "Phase 4: Scaffold"
 
     run_session \
-        "Read .clone-kit/phases/04-scaffold.md and execute it. Use feature-map.json, build-queue.json, and config.json. Verify on emulator with mobile MCP. Update progress.json with scaffold_status when complete." \
+        "Read .clone-kit/phases/04-scaffold.md and execute it. Use feature-map.json, build-queue.json, and config.json. Verify on emulator with mobile MCP. Update progress.json with scaffold_status when complete. Create CLAUDE.md at project root per Step 7." \
         "Scaffolding project"
 
     update_progress "scaffold_status" '"complete"'
@@ -112,7 +112,7 @@ print(f\"{p['name']} ({len(p.get('features',[]))} features)\")
     echo -e "  ${CYAN}[$((n+1))/$total]${NC} $info"
 
     run_session \
-        "Read .clone-kit/phases/05-build-loop.md and execute build phase $n from build-queue.json. Read ONLY phase $n features from feature-map.json. Read progress.json and test-results.json for state. Test with mobile MCP. Run regression tests. Update test-results.json and progress.json." \
+        "Read .clone-kit/phases/05-build-loop.md and execute build phase $n from build-queue.json. Read ONLY phase $n features from feature-map.json. Read progress.json and test-results.json for state. Read CLAUDE.md for project context. Test with mobile MCP. Run regression tests. Update test-results.json and progress.json. After completion, update CLAUDE.md with newly implemented features." \
         "Build phase $n"
 
     update_progress "last_build_phase_completed" "$n"
@@ -146,7 +146,7 @@ do_integration() {
     header "Phase 6: Integration & Polish"
 
     run_session \
-        "Read .clone-kit/phases/06-integration.md and execute it. Read test-results.json for deferred issues. Fix all issues, test cross-feature flows with mobile MCP, polish UI, final walkthrough. Save screenshots to screenshots/final/. Update progress.json." \
+        "Read .clone-kit/phases/06-integration.md and execute it. Read test-results.json for deferred issues. Fix all issues, test cross-feature flows with mobile MCP, polish UI, final walkthrough. Save screenshots to screenshots/final/. Update progress.json. Finalize CLAUDE.md for the completed app." \
         "Integration and polish"
 
     update_progress "integration_status" '"complete"'
