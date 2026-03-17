@@ -97,9 +97,11 @@ Using mobile MCP (if available) or manual build:
 
 Fix issues immediately, re-verify, then continue.
 
-### Step 7: Create CLAUDE.md
+### Step 7: Create or update CLAUDE.md
 
 Generate a `CLAUDE.md` at the project root so that any future Claude Code session can immediately understand this project without exploring the codebase.
+
+**If a CLAUDE.md already exists**, read it first and preserve any existing content — user-written instructions, project conventions, coding standards, or custom sections. Merge the sections below into the existing file, placing them after any pre-existing content. Do not overwrite or remove anything the user already had.
 
 Read these files for context:
 - `config.json` — target app name, tech stack
