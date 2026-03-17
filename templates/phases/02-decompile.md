@@ -2,7 +2,7 @@
 
 ## Goal
 
-Discover the target app's feature surface, screen structure, navigation patterns, data entities, and integration points by analyzing decompiled code. This phase is purely for **understanding what to build and how things work** — not for copying code, styles, or implementation details verbatim. We use these insights to inform our own clean implementation, which we can likely build better.
+Discover the target app's feature surface, screen structure, navigation patterns, data entities, and integration points by analyzing decompiled code. This phase is for **understanding what to build and how things work** — not for copying code or implementation details verbatim. However, we DO extract visual design tokens (colors, dimensions, typography) to match the original app's look and feel.
 
 ## Prerequisites
 
@@ -27,27 +27,26 @@ If the user wants to skip this phase, proceed to Phase 3 with research data only
 
 ## Outputs
 
-All outputs describe *what* the app does, not *how* to replicate its code:
-
 - `analysis/data-models.json` — discovered entity types and their relationships
 - `analysis/screens.json` — screen inventory and purpose
 - `analysis/api-endpoints.json` — API surface area and patterns
 - `analysis/local-storage.json` — local data strategy
 - `analysis/navigation-graph.json` — user flow structure
 - `analysis/third-party-sdks.json` — third-party capabilities used
+- `analysis/design-tokens.json` — extracted colors, dimensions, typography, and theme values
 - `progress.json` updated
 
 ## Important: Feature Discovery, Not Code Copying
 
-The purpose of decompilation is to answer: **"What does this app do?"** — not "How is this app coded?"
+The purpose of decompilation is to answer: **"What does this app do and what does it look like?"**
 
 - Discover entity types and relationships, but design your own data models
-- Identify screens and navigation flows, but design your own UI
+- Identify screens and navigation flows, and match the original app's visual design using extracted design tokens and reference screenshots
 - Note API patterns and endpoints, but build your own API layer
 - Understand storage strategies, but implement your own approach
-- The original code may be poorly structured, over-engineered, or legacy — we can build it better
+- Extract visual design tokens (colors, dimensions, typography) to replicate the UI faithfully
 
-**Do NOT:** copy class names, field names, package structure, code patterns, or architectural decisions verbatim. Use the decompiled code as a reference to understand features and behaviors, then discard it.
+**Do NOT:** copy class names, field names, package structure, code patterns, or architectural decisions verbatim. Use the decompiled code as a reference to understand features, behaviors, and visual design.
 
 ## Instructions
 
@@ -102,7 +101,54 @@ The purpose of decompilation is to answer: **"What does this app do?"** — not 
 }
 ```
 
-### Step 3: Discover API Surface
+### Step 3: Extract Design Tokens
+
+**Where to look:**
+- `res/values/colors.xml` — full color palette with semantic names
+- `res/values/dimens.xml` — spacing, padding, margins, text sizes, corner radii
+- `res/values/styles.xml` and `res/values/themes.xml` — theme definitions, default styles
+- `res/font/` — font families used in the app
+- `res/drawable/` — icon style patterns (outlined vs filled, rounded vs sharp)
+- `res/values-night/colors.xml` — dark mode colors (if present)
+
+**Extract and record the app's visual design system. These values will be used in Phase 4 to create a matching design system.**
+
+```json
+{
+  "colors": {
+    "colorPrimary": "#hex",
+    "colorPrimaryVariant": "#hex",
+    "colorSecondary": "#hex",
+    "colorBackground": "#hex",
+    "colorSurface": "#hex",
+    "colorError": "#hex",
+    "colorOnPrimary": "#hex",
+    "colorOnBackground": "#hex",
+    "colorOnSurface": "#hex"
+  },
+  "dimensions": {
+    "padding_small": "4dp",
+    "padding_standard": "16dp",
+    "padding_large": "24dp",
+    "corner_radius": "8dp",
+    "elevation_low": "2dp",
+    "elevation_high": "8dp"
+  },
+  "typography": {
+    "font_family": "font name or resource reference",
+    "text_sizes": {
+      "headline": "24sp",
+      "title": "20sp",
+      "body": "16sp",
+      "caption": "12sp"
+    }
+  },
+  "dark_mode_colors": {},
+  "icon_style": "outlined | filled | rounded | sharp"
+}
+```
+
+### Step 4: Discover API Surface
 
 **Where to look:**
 - Retrofit interfaces (`@GET`, `@POST`, `@PUT`, `@DELETE`)
@@ -125,7 +171,7 @@ The purpose of decompilation is to answer: **"What does this app do?"** — not 
 }
 ```
 
-### Step 4: Discover Local Storage Strategy
+### Step 5: Discover Local Storage Strategy
 
 **Where to look:**
 - Room: `@Database`, `@Dao`, `@Entity`
@@ -148,7 +194,7 @@ The purpose of decompilation is to answer: **"What does this app do?"** — not 
 }
 ```
 
-### Step 5: Discover Navigation Graph
+### Step 6: Discover Navigation Graph
 
 **Map the high-level user flows — how sections connect, what the entry points are, and what onboarding looks like.**
 
@@ -166,7 +212,7 @@ The purpose of decompilation is to answer: **"What does this app do?"** — not 
 }
 ```
 
-### Step 6: Discover Third-Party Capabilities
+### Step 7: Discover Third-Party Capabilities
 
 **Look for imports/manifest entries from:** Firebase, Segment, Amplitude, Mixpanel, Braze, LaunchDarkly, Datadog, Sentry, Stripe, RevenueCat, AppsFlyer, Adjust, and similar.
 
@@ -200,8 +246,9 @@ Phase 2 (Feature Discovery) complete.
 - [N] API resources identified
 - Local storage strategy documented
 - [N] third-party capabilities cataloged
+- Design tokens extracted (colors, dimensions, typography)
 
-These discoveries will inform our own clean implementation in later phases.
+These discoveries will inform our implementation. Design tokens will be used in Phase 4 to match the original app's visual design.
 
 Next: "Read .clone-kit/phases/03-feature-map.md and execute it"
 ```

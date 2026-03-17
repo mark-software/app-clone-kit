@@ -9,6 +9,9 @@ Set up the full project skeleton - data layer, shared components, navigation, pl
 - `feature-map.json`
 - `build-queue.json`
 - `config.json` (tech stack)
+- `research/visual-design.json` (visual design analysis from Phase 1)
+- `research/screenshots/` (reference screenshots from Phase 1)
+- `analysis/design-tokens.json` (extracted design tokens from Phase 2, if available)
 
 ## Outputs
 
@@ -52,11 +55,17 @@ Extract common patterns from the feature map. Typical components:
 - FAB (floating action button) for quick-add
 - Section headers for grouped lists
 
-Set up a basic design system:
-- Color palette (pick a fresh, clean palette — don't copy the original app's exact colors)
-- Typography scale
-- Spacing scale (4, 8, 12, 16, 24, 32)
-- Border radius and elevation values
+Set up a design system that matches the original app's visual identity:
+
+1. Read `research/visual-design.json` and `analysis/design-tokens.json` (if available)
+2. Color palette: Use the original app's colors. Map them to your framework's theme system (primary, secondary, background, surface, error, text colors)
+3. Typography: Match the original's font family (or closest equivalent available for your framework) and size scale
+4. Spacing: Use the original's spacing values, or match its density (compact/comfortable/spacious)
+5. Corner radius: Match the original's corner style
+6. Elevation/shadow: Match the original's depth style
+7. Icon set: Use an icon set matching the original's style (outlined, filled, rounded, etc.)
+
+If design tokens weren't extracted (no APK), derive values from the reference screenshots in `research/screenshots/`.
 
 ### Step 4: Navigation structure
 

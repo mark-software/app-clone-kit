@@ -11,6 +11,8 @@ Build a comprehensive feature inventory of the target app using only public sour
 ## Outputs
 
 - `research/feature-inventory.json`
+- `research/visual-design.json`
+- `research/screenshots/` (gathered reference screenshots)
 - `research/sources.md`
 - `progress.json` updated
 
@@ -66,11 +68,53 @@ For every feature discovered:
 - `medium` - mentioned in reviews or third-party articles
 - `low` - inferred from screenshots or indirect mentions
 
-### Step 3: Generate sources log
+### Step 3: Gather visual references
+
+Autonomously gather screenshots of the app's UI — do NOT ask the user unless you can't find enough.
+
+**Where to find screenshots:**
+1. Play Store and App Store listing pages — download all screenshot images (typically 5-8 per listing)
+2. Web search for "[app name] screenshots", "[app name] app review" — download screenshots from review articles, tech blogs, Product Hunt pages
+3. YouTube search for "[app name] tutorial" or "[app name] review" — grab thumbnails that show the app UI
+4. The app's marketing website — download any product screenshots or UI mockups
+
+Save all gathered screenshots to `research/screenshots/`.
+
+**If fewer than 3 screenshots were found:** Ask the user: "I could only find [N] screenshots of [app name]. Do you have any screenshots you can provide? (folder path) This will significantly improve UI fidelity." Save user-provided screenshots to `research/screenshots/user-provided/`.
+
+**If no screenshots at all:** Ask the user for screenshots. If they don't have any, proceed with best-effort design based on app store descriptions and feature analysis — note this limitation in `progress.json`.
+
+**Analyze screenshots and create `research/visual-design.json`:**
+
+```json
+{
+  "color_scheme": {
+    "primary": "#hex",
+    "secondary": "#hex",
+    "background": "#hex",
+    "surface": "#hex",
+    "text_primary": "#hex",
+    "text_secondary": "#hex",
+    "accent": "#hex"
+  },
+  "typography_style": "modern-sans | classic-serif | rounded | geometric | etc",
+  "layout_patterns": ["bottom-nav-tabs", "cards-in-list", "fab-for-add"],
+  "spacing_density": "compact | comfortable | spacious",
+  "corner_style": "sharp | slightly-rounded | very-rounded | pill",
+  "elevation_style": "flat | subtle-shadow | prominent-shadow | material",
+  "icon_style": "outlined | filled | rounded | custom",
+  "overall_feel": "brief description of the visual identity",
+  "screenshots_catalog": [
+    { "file": "path", "screen": "what screen this shows", "notes": "key visual elements" }
+  ]
+}
+```
+
+### Step 4: Generate sources log
 
 Create `research/sources.md` listing every URL consulted with a one-line summary of what was learned from each.
 
-### Step 4: Update progress
+### Step 5: Update progress
 
 Write to `progress.json`:
 ```json
@@ -90,6 +134,7 @@ Report to user:
 ```
 Phase 1 complete.
 - Discovered [N] features across [N] categories
+- Gathered [N] reference screenshots
 - Consulted [N] sources
 - [N] high confidence, [N] medium, [N] low
 

@@ -2,12 +2,14 @@
 
 ## Goal
 
-Merge research and decompilation discoveries into a unified, dependency-ordered feature map and build queue. All feature specs should describe *what to build* in our own clean implementation — not replicate the original app's code or architecture.
+Merge research and decompilation discoveries into a unified, dependency-ordered feature map and build queue. All feature specs should describe *what to build* in our own clean implementation — not replicate the original app's code or architecture, but we DO match its visual design.
 
 ## Inputs
 
 - `research/feature-inventory.json` (Phase 1)
-- `analysis/*.json` (Phase 2, if available)
+- `research/visual-design.json` (Phase 1)
+- `research/screenshots/` (Phase 1)
+- `analysis/*.json` (Phase 2, if available — includes `design-tokens.json`)
 - `config.json`
 
 ## Outputs
@@ -59,7 +61,8 @@ Each entry must be self-contained - buildable from this entry alone:
         {
           "name": "ScreenName",
           "ui_elements": ["element descriptions"],
-          "states": ["state1", "state2", "empty", "loading", "error"]
+          "states": ["state1", "state2", "empty", "loading", "error"],
+          "reference_screenshots": ["paths to matching screenshots from research/screenshots/"]
         }
       ],
 
@@ -74,6 +77,8 @@ Each entry must be self-contained - buildable from this entry alone:
   ]
 }
 ```
+
+**Visual references:** For each screen, match it to the closest reference screenshot(s) from `research/screenshots/`. Record the paths in `reference_screenshots`. For screens without a direct screenshot match, leave `reference_screenshots` empty — their design will be derived from the design system (which is based on the original app's visual identity) and the layout patterns observed in available screenshots.
 
 ### Step 3: Generate build queue
 

@@ -64,6 +64,16 @@ For each feature, via mobile MCP:
 ```
 a. Navigate to the feature's primary screen
 b. Screenshot: verify UI renders (no crash, correct layout)
+b2. Visual comparison: if reference screenshots exist for this screen
+    (from feature-map.json `reference_screenshots` field):
+    - Layout structure matches (element positioning, hierarchy)
+    - Color usage matches design system (derived from original)
+    - Spacing and density feel similar
+    - If significant visual differences: adjust before proceeding
+    If no reference screenshots exist for this screen:
+    - Verify it uses the design system consistently (colors, typography, spacing, corners)
+    - Verify layout patterns are consistent with screens that DO have references
+    - The screen should feel like it belongs in the same app as the referenced screens
 c. Happy path: perform primary action, verify result
 d. Edit: modify an entry, verify persistence
 e. Delete: remove an entry, verify removal
@@ -82,6 +92,7 @@ Screenshots: `screenshots/phase-{N}/{feature_id}/{test_name}.png`
 - Data persists across navigation
 - Empty states display correctly
 - Feature-specific behaviors work per spec
+- UI visually resembles the original app's corresponding screen (layout, colors, spacing)
 
 ## Fail Handling
 

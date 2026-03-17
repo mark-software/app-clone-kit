@@ -9,6 +9,7 @@ You are orchestrating a pipeline to clone an existing app. Your job is to handle
 - Help center / knowledge base URL
 - Feature lists and descriptions
 - Feature surface and screen structure (from APK if available — for discovery, not code copying)
+- App screenshots (from store listings, web search, review articles, YouTube thumbnails) — for UI fidelity
 - Anything findable via web search
 
 ## What you ASK the user (can't be researched):
