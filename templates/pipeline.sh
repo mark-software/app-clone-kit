@@ -13,9 +13,7 @@
 #   ./.clone-kit/pipeline.sh reset        Reset build progress (keeps research)
 # ============================================================================
 
-set -e
-
-RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'
+RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; BLUE='\033[0;34m'
 CYAN='\033[0;36m'; BOLD='\033[1m'; DIM='\033[2m'; NC='\033[0m'
 
 # Project root is parent of .clone-kit/
@@ -195,8 +193,13 @@ show_status() {
     done
 
     # Integration
-    [ "$integration" = "complete" ] && echo -e "  ${GREEN}✓${NC} Integration" || \
-        { [ "$last" -ge "$((total-1))" ] && echo -e "  ${YELLOW}▶${NC} Integration ${DIM}(next)${NC}" || echo -e "  ${DIM}· Integration${NC}"; }
+    if [ "$integration" = "complete" ]; then
+        echo -e "  ${GREEN}✓${NC} Integration"
+    elif [ "$last" -ge "$((total-1))" ]; then
+        echo -e "  ${YELLOW}▶${NC} Integration ${DIM}(next)${NC}"
+    else
+        echo -e "  ${DIM}· Integration${NC}"
+    fi
 
     # Test summary
     if [ -f "$TEST_RESULTS" ]; then
