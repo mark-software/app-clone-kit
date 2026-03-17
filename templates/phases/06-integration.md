@@ -49,6 +49,16 @@ For each flow: execute with MCP, screenshot, fix issues.
 
 Screen by screen:
 
+**Visual fidelity check (reference screenshots):**
+- Open reference screenshots from `research/screenshots/` side by side with the built screens
+- For each major screen, compare against the original:
+  - Color palette matches
+  - Layout structure and element positioning match
+  - Typography weight and sizing match
+  - Spacing and density match
+  - Icon style matches
+- Fix any significant visual deviations before proceeding to general polish
+
 **Spacing & layout:**
 - Consistent padding
 - No text clipping or overflow
@@ -72,6 +82,24 @@ Screen by screen:
 - Pull-to-refresh where expected
 - Keyboard dismisses properly
 - Status bar matches
+
+**UI/UX improvement pass:**
+
+After confirming visual fidelity with the original, review each screen for genuine improvements:
+
+- Accessibility: ensure contrast ratios meet WCAG AA (4.5:1 for text, 3:1 for large text/UI)
+- Touch targets: enlarge any below 44x44pt
+- Visual hierarchy: ensure the most important content draws the eye first
+- Consistency: fix any inconsistencies the original app had (e.g., mismatched padding, inconsistent icon weights)
+- Modern patterns: if the original uses clearly dated patterns (e.g., hamburger menu when bottom tabs would work better), consider updating — but only for clear wins
+
+Rules for this pass:
+- Do NOT change the color palette or brand identity
+- Do NOT rearrange screen layouts unless the original has a clear usability problem
+- Do NOT add decorative elements, animations, or visual flourish
+- Every change must have a concrete justification (accessibility, usability, consistency)
+- When in doubt, keep the original's design
+- Take before/after screenshots for each change made
 
 ### Step 4: First-run experience
 
