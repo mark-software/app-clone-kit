@@ -21,12 +21,16 @@ TEMPLATE_DIR="$SCRIPT_DIR/../templates"
 
 # Determine target
 GLOBAL=false
+SKIP_MCP=false
 TARGET_DIR="$(pwd)"
 
 for arg in "$@"; do
     case "$arg" in
         --global|-g)
             GLOBAL=true
+            ;;
+        --skip-mcp)
+            SKIP_MCP=true
             ;;
         --help|-h)
             echo ""
@@ -35,6 +39,7 @@ for arg in "$@"; do
             echo "  Usage:"
             echo "    ./bin/install.sh              Install into current project"
             echo "    ./bin/install.sh --global     Install /clone command globally"
+            echo "    ./bin/install.sh --skip-mcp    Skip Mobile MCP auto-install"
             echo ""
             echo "  Remote install:"
             echo "    curl -fsSL https://raw.githubusercontent.com/mark-software/app-clone-kit/main/bin/remote-install.sh | bash"
@@ -134,12 +139,21 @@ else
     echo -e "  ${DIM}○${NC} jadx not found (optional) - install: ${DIM}brew install jadx${NC}"
 fi
 
-# Check mobile MCP
+# Install mobile MCP
 if command -v claude &>/dev/null && claude mcp list 2>/dev/null | grep -qi "mobile"; then
     echo -e "  ${GREEN}✓${NC} Mobile MCP"
+elif ! command -v claude &>/dev/null; then
+    echo -e "  ${DIM}○${NC} Mobile MCP (skipped - claude CLI not available)"
+elif [ "$SKIP_MCP" = true ]; then
+    echo -e "  ${DIM}○${NC} Mobile MCP (skipped)"
 else
-    echo -e "  ${DIM}○${NC} Mobile MCP not found (recommended) - install:"
-    echo -e "    ${DIM}claude mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest${NC}"
+    echo -e "  ${DIM}  Installing mobile-mcp...${NC}"
+    if claude mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest 2>&1; then
+        echo -e "  ${GREEN}✓${NC} Mobile MCP installed"
+    else
+        echo -e "  ${RED}✗${NC} Mobile MCP install failed"
+        echo -e "    ${DIM}You can install manually: claude mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest${NC}"
+    fi
 fi
 
 # ---- Done ----
