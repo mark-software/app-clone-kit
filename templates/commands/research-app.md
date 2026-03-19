@@ -18,6 +18,7 @@ You are researching an existing app to prepare a build plan. Your job is to hand
 - Target platform for testing
 - Feature tier to clone (free / paid / all)
 - Whether they have an APK file available locally
+- Screenshots they'd like to provide (optional, folder path)
 - Features to exclude (after presenting the discovered list)
 
 ## Workflow
@@ -52,16 +53,19 @@ Ask everything in a single message. Do not spread across multiple turns:
 - Website: [url]
 - Help center: [url]
 
-Before I start, 4 quick questions:
+Before I start, 5 quick questions:
 
 1. Tech stack? (KMP/Compose Multiplatform [default], React Native/Expo, Flutter, Native Android, Native iOS)
 2. Test on Android emulator, iOS simulator, or both?
 3. Clone free features only, or include paid features too?
 4. Do you have the APK downloaded locally? (Path if yes — helps discover features and understand how the app works, but isn't required. We don't copy code from it.)
+5. Have any screenshots of the app you'd like to provide? (folder path, or skip — I'll also gather screenshots from app stores and the web)
 
 After this I run autonomously and check in only when I need your review."
 
 Save answers to `config.json` under `clone_config`.
+
+If the user provided a screenshots folder path, copy those images to `research/screenshots/user-provided/`.
 
 ### Step 4: Run Phase 1 - Research
 
