@@ -1,8 +1,8 @@
 # app-clone-kit
 
-Clone any existing app using AI-powered automation. One command to install, one slash command to start.
+Clone any existing app using AI-powered automation. Two commands: research, then build.
 
-**app-clone-kit** discovers an existing app's features through web research and optional APK decompilation, generates a dependency-ordered build plan, then builds your own clean implementation phase-by-phase with automated testing between each step. Your total hands-on time: ~25 minutes.
+**app-clone-kit** discovers an existing app's features through web research and optional APK decompilation, generates a dependency-ordered build plan, then builds your own clean implementation in a single Claude Code session with automated testing. Your total hands-on time: ~25 minutes.
 
 > **Philosophy:** Decompilation is for *feature discovery* — understanding what an app does and how it works. We don't copy code, styles, or implementation details verbatim. We use that understanding to build something better with clean, modern architecture.
 
@@ -12,26 +12,23 @@ Clone any existing app using AI-powered automation. One command to install, one 
 # Install into your project
 curl -fsSL https://raw.githubusercontent.com/mark-software/app-clone-kit/main/bin/remote-install.sh | bash
 
-# Start Claude Code and clone an app
+# Start Claude Code
 claude
-> /clone SleepyPanda
+> /research-app SleepyPanda   # Research + plan
+> /build-app                   # Build everything (new session)
 ```
 
-That's it. Claude researches the app, asks you 4 preference questions, builds a plan, and tells you when to run the automated build pipeline.
+That's it. Claude researches the app, asks you 4 preference questions, builds a plan, then builds your app.
 
 ## What It Does
 
-**Phase 1 - Research:** Claude searches the Play Store, App Store, help centers, review sites, and forums to build a comprehensive feature inventory. You never open the target app.
+**Phase 1 - Research:** Claude searches the Play Store, App Store, help centers, review sites, and forums to build a comprehensive feature inventory. Reference screenshots are gathered for UI fidelity. You never open the target app.
 
-**Phase 2 - Decompile (optional):** If you provide an APK, jadx decompiles it and Claude discovers the app's feature surface — what screens exist, how navigation flows, what data entities are involved, and what API patterns are used. This is purely for understanding *what to build*, not how to copy it.
+**Phase 2 - Decompile (optional):** If you provide an APK, jadx decompiles it and Claude discovers the app's feature surface — what screens exist, how navigation flows, what data entities are involved, what API patterns and design tokens are used. This is purely for understanding *what to build*, not how to copy it.
 
 **Phase 3 - Feature Map:** Research and decompilation data merge into a dependency-ordered build queue. Features are grouped into phases of 2-4, with foundations first and reporting last.
 
-**Phase 4 - Scaffold:** Project initialization, all data models, shared components, navigation shell, seed data. Verified on emulator before proceeding.
-
-**Phase 5 - Build Loop:** Each feature is built, tested via mobile MCP, and verified before the next one starts. Regressions are caught between phases. One Claude Code session per build phase.
-
-**Phase 6 - Integration:** Deferred issues fixed, cross-feature flows tested, UI polished, final walkthrough.
+**Build Phase:** Everything happens in one session — project initialization, all data models, shared components, navigation shell, then feature-by-feature implementation with testing between each step, followed by integration testing, visual fidelity checks, and polish.
 
 ## Installation
 
@@ -45,18 +42,19 @@ This copies the slash command and phase files into your project:
 
 ```
 .clone-kit/
-├── phases/
-│   ├── 01-research.md
-│   ├── 02-decompile.md
-│   ├── 03-feature-map.md
-│   ├── 04-scaffold.md
-│   ├── 05-build-loop.md
-│   └── 06-integration.md
-└── pipeline.sh
+└── phases/
+    ├── 01-research.md
+    ├── 02-decompile.md
+    ├── 03-feature-map.md
+    ├── 04-scaffold.ref.md    # Reference
+    ├── 05-build-loop.ref.md  # Reference
+    ├── 06-integration.ref.md # Reference
+    └── build.md              # Active build instructions
 
 .claude/
 └── commands/
-    └── clone.md           # /clone slash command
+    ├── research-app.md    # /research-app slash command
+    └── build-app.md       # /build-app slash command
 ```
 
 ### Manual install
@@ -73,7 +71,7 @@ cd your-project
 curl -fsSL https://raw.githubusercontent.com/mark-software/app-clone-kit/main/bin/remote-install.sh | bash -s -- --global
 ```
 
-Installs the `/clone` command to `~/.claude/commands/` so it's available everywhere. Phase files are copied per-project on first run.
+Installs the `/research-app` command to `~/.claude/commands/` so it's available everywhere. Phase files are copied per-project on first run.
 
 ## Usage
 
@@ -81,26 +79,24 @@ Installs the `/clone` command to `~/.claude/commands/` so it's available everywh
 
 ```bash
 claude
-> /clone SleepyPanda
+> /research-app SleepyPanda
 ```
 
 Claude will:
-1. Research the app - package name, URLs, features, help docs (you provide nothing)
+1. Research the app - package name, URLs, features, screenshots, help docs (you provide nothing)
 2. Ask you 4 questions - tech stack, platform, tier, APK availability
 3. Run research and build the feature map
 4. Show you a summary to skim (~5 min)
-5. Hand off to the build pipeline
+5. Tell you to run `/build-app`
 
-### Automated build
+### Build (after research is done)
 
 ```bash
-./clone-kit/pipeline.sh              # Run or resume
-./clone-kit/pipeline.sh status       # Check progress
-./clone-kit/pipeline.sh phase 3      # Run specific build phase
-./clone-kit/pipeline.sh reset        # Reset build progress (keeps research)
+claude
+> /build-app
 ```
 
-The pipeline runs one Claude Code session per build phase. Sessions are autonomous - start one and walk away. Progress is tracked in `progress.json` so you can resume after any interruption.
+Builds the entire app in a single session using the research output. Run this after `/research-app`, or re-run it to rebuild from scratch — research data is preserved.
 
 ## Your Time Commitment
 
@@ -109,7 +105,7 @@ The pipeline runs one Claude Code session per build phase. Sessions are autonomo
 | Start | Answer 4 preference questions | 2 min |
 | After Phase 1 | Skim feature inventory | 5 min |
 | After Phase 3 | Skim build queue | 5 min |
-| After Phase 6 | Walk through the finished app | 10-20 min |
+| After build | Walk through the finished app | 10-20 min |
 | **Total** | | **~25 min** |
 
 ## Prerequisites
@@ -119,7 +115,7 @@ The pipeline runs one Claude Code session per build phase. Sessions are autonomo
 - Git
 
 **Recommended:**
-- Mobile MCP for automated testing: `claude mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest`
+- Mobile MCP for automated testing (auto-installed during setup, or: `claude mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest`)
 - Android emulator or iOS simulator running
 
 **Optional:**
@@ -127,45 +123,42 @@ The pipeline runs one Claude Code session per build phase. Sessions are autonomo
 
 ## How It Works
 
-The key insight is **decomposition + isolation + testing gates**.
+The key insight is **decomposition + full context + testing gates**.
 
-Complex apps fail when built in one shot because bugs compound across features. app-clone-kit breaks the problem into small, independently-testable units:
+Complex apps fail when built without a plan. app-clone-kit breaks the problem into small, independently-testable units while keeping full context in a single session:
 
 1. **Feature discovery** is automated via web research (and optionally APK decompilation for deeper understanding)
 2. **Dependency ordering** ensures nothing is built before its prerequisites
-3. **Each feature is built and tested in isolation** before the next one starts
-4. **Fresh Claude Code sessions per build phase** prevent context bloat
-5. **Regression tests** after each phase catch cross-feature breakage early
-6. **Local-first architecture** means every feature works with local data - no backend complexity during build
+3. **Each feature is built and tested** before the next one starts
+4. **Single session with 1M context** keeps all research, analysis, and code in one place — no context loss between sessions
+5. **Visual fidelity checks** compare built screens against reference screenshots from the original app
+6. **Regression checks** after each build phase catch cross-feature breakage early
+7. **Local-first architecture** means every feature works with local data — no backend complexity during build
 
 ## Project Structure (after running)
 
 ```
 your-project/
-├── .claude/commands/clone.md    # /clone slash command
+├── CLAUDE.md                    # Generated project documentation
+├── .claude/commands/research-app.md    # /research-app slash command
 ├── .clone-kit/
-│   ├── phases/                  # Phase instruction files
-│   │   ├── 01-research.md
-│   │   ├── 02-decompile.md
-│   │   ├── 03-feature-map.md
-│   │   ├── 04-scaffold.md
-│   │   ├── 05-build-loop.md
-│   │   └── 06-integration.md
-│   └── pipeline.sh             # Build runner script
-├── config.json                  # Generated by /clone
-├── progress.json                # Auto-tracked state
-├── research/                    # Phase 1 output
+│   └── phases/                  # Phase instruction files
+│       ├── 01-research.md
+│       ├── 02-decompile.md
+│       ├── 03-feature-map.md
+│       └── build.md            # Build instructions
+├── config.json                  # Generated by /research-app
+├── research/                    # Phase 1 output (+ screenshots)
 ├── analysis/                    # Phase 2 output (if APK)
 ├── feature-map.json             # Phase 3 output
 ├── build-queue.json             # Phase 3 output
-├── test-results.json            # Phase 5 output
-├── screenshots/                 # MCP test screenshots
+├── screenshots/                 # Test screenshots
 └── src/                         # Your app
 ```
 
 ## Configuration
 
-`config.json` is generated by the `/clone` command. You can also create it manually:
+`config.json` is generated by the `/research-app` command. You can also create it manually:
 
 ```json
 {
@@ -197,15 +190,13 @@ your-project/
 
 ## Troubleshooting
 
-**Pipeline stopped mid-build:** Just run `./clone-kit/pipeline.sh` again. It resumes from the last completed phase.
+**Build stopped mid-session:** Start a new Claude Code session and run `/build`. It reads the existing research and builds from scratch.
 
-**Feature X failing after 3 retries:** The build loop defers it to Phase 6 (integration). Check `test-results.json` for details.
+**Feature X failing after 3 retries:** The build defers it to the integration section. Issues are fixed during the polish pass at the end.
 
-**Context getting bloated:** Each build phase runs as a separate `claude -p` session. If a single phase is too large, the phase instructions tell Claude to use subagents via the Task tool.
+**Want to change tech stack:** Delete the generated source code, then run `/build`. Research and feature map data (Phases 1-3) are stack-agnostic and reusable.
 
-**Want to change tech stack:** Re-run from Phase 4. Research and feature map data (Phases 1-3) are stack-agnostic and reusable. Run `./clone-kit/pipeline.sh reset` then `./clone-kit/pipeline.sh`.
-
-**No mobile MCP / emulator:** The pipeline still works - it falls back to build-only verification (no crashes, no lint errors) instead of visual MCP testing. Results won't be as thorough.
+**No mobile MCP / emulator:** The build still works — it falls back to build-only verification (no crashes, no lint errors) instead of visual MCP testing. Results won't be as thorough.
 
 ## Contributing
 

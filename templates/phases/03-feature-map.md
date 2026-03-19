@@ -2,7 +2,7 @@
 
 ## Goal
 
-Merge research and decompilation discoveries into a unified, dependency-ordered feature map and build queue. All feature specs should describe *what to build* in our own clean implementation — not replicate the original app's code or architecture, but we DO match its visual design.
+Merge research and decompilation discoveries into a unified, dependency-ordered feature map and build queue. All feature specs should describe *what to build* in our own clean implementation — not replicate the original app's code or architecture, but we DO match its visual design and interaction patterns.
 
 ## Inputs
 
@@ -70,6 +70,16 @@ Each entry must be self-contained - buildable from this entry alone:
         "Specific behavior or business rule"
       ],
 
+      "interactions": {
+        "gestures": ["long_press_to_select", "swipe_to_dismiss", "drag_to_reorder", "pinch_to_zoom"],
+        "animations": ["card_expand_to_fullscreen", "shared_element_transition", "spring_physics_reorder", "crossfade_on_toggle"],
+        "haptics": ["selection_haptic", "drag_start_haptic", "delete_haptic"],
+        "transitions": {
+          "enter": "describe how this screen enters (slide_up, expand_from_card, fade_in)",
+          "exit": "describe how this screen exits (shrink_to_card, slide_down, fade_out)"
+        }
+      },
+
       "dependencies": ["feature_ids_this_depends_on"],
       "dependents": ["feature_ids_that_depend_on_this"],
       "local_data_only": true
@@ -79,6 +89,8 @@ Each entry must be self-contained - buildable from this entry alone:
 ```
 
 **Visual references:** For each screen, match it to the closest reference screenshot(s) from `research/screenshots/`. Record the paths in `reference_screenshots`. For screens without a direct screenshot match, leave `reference_screenshots` empty — their design will be derived from the design system (which is based on the original app's visual identity) and the layout patterns observed in available screenshots.
+
+**Interactions:** For each feature, document the gestures, animations, haptics, and screen transitions observed in the original app. If you have live app screenshots showing interaction states (selection mode, drag-in-progress), reference them. For features where interaction details aren't known, note `"inferred": true` and describe what's typical for the pattern.
 
 ### Step 3: Generate build queue
 
@@ -118,17 +130,21 @@ Before finishing, verify:
 - No phase exceeds 4 features
 - `local_data_only: true` features don't reference API endpoints
 - Excluded features from config.json are omitted
+- Every feature with gesture interactions has them documented in `interactions`
+- Every screen with a reference screenshot has it linked
 
 ## Completion
 
 ```
 Phase 3 complete.
 - [N] features in [N] build phases
+- [N] features with documented interactions
+- [N] screens with reference screenshots linked
 - Dependency graph validated
 
 REVIEW (~5 min): Check build-queue.json
 - Phase ordering sensible?
 - Want to remove anything?
 
-Next: "Read .clone-kit/phases/04-scaffold.md and execute it"
+Next: "/build-app"
 ```

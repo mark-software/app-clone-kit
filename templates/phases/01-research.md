@@ -84,7 +84,35 @@ Save all gathered screenshots to `research/screenshots/`.
 
 **If no screenshots at all:** Ask the user for screenshots. If they don't have any, proceed with best-effort design based on app store descriptions and feature analysis — note this limitation in `progress.json`.
 
-**Analyze screenshots and create `research/visual-design.json`:**
+### Step 4: Capture live app screenshots (if mobile MCP available)
+
+**This step is critical for UI fidelity.** If the app is installed on an emulator with mobile MCP access, capture screenshots directly from the running app. These are the highest-fidelity references.
+
+**Process:**
+1. Launch the target app on the emulator
+2. Navigate to each major screen and capture a screenshot
+3. Name each file descriptively: `home_grid.png`, `note_editor.png`, `drawer_open.png`, `search_zero_state.png`, `settings.png`, etc.
+4. Capture key states: empty states, populated states, modals/sheets open, selection modes
+5. Capture interaction states: long-press selection, drag-in-progress (if possible), expanded/collapsed sections
+6. Save all to `research/screenshots/live/`
+
+**Minimum screenshot set for any app:**
+- Home/main screen (populated with data)
+- Detail/editor screen
+- Navigation (drawer, tabs, or bottom nav)
+- Create/add flow
+- Search screen (zero-state + with results)
+- Settings screen
+- Empty states (at least 1)
+- Any distinctive UI patterns (color pickers, special inputs, etc.)
+
+**Target: 15-25 screenshots** covering all major screens and states.
+
+If mobile MCP is not available, rely on the web-gathered screenshots from Step 3.
+
+### Step 5: Analyze screenshots and create visual design file
+
+Create `research/visual-design.json`:
 
 ```json
 {
@@ -104,17 +132,24 @@ Save all gathered screenshots to `research/screenshots/`.
   "elevation_style": "flat | subtle-shadow | prominent-shadow | material",
   "icon_style": "outlined | filled | rounded | custom",
   "overall_feel": "brief description of the visual identity",
+  "key_interactions": {
+    "screen_transitions": "describe how screens open/close (slide, expand, fade, shared-element)",
+    "list_item_gestures": "describe gestures on list items (swipe, long-press, drag)",
+    "selection_mode": "describe how multi-select works (long-press to enter, tap to toggle, action bar)",
+    "pull_to_refresh": true,
+    "haptic_feedback": "describe when haptics fire (selection, drag start, delete)"
+  },
   "screenshots_catalog": [
     { "file": "path", "screen": "what screen this shows", "notes": "key visual elements" }
   ]
 }
 ```
 
-### Step 4: Generate sources log
+### Step 6: Generate sources log
 
 Create `research/sources.md` listing every URL consulted with a one-line summary of what was learned from each.
 
-### Step 5: Update progress
+### Step 7: Update progress
 
 Write to `progress.json`:
 ```json
@@ -123,6 +158,7 @@ Write to `progress.json`:
   "phase_1_status": "complete",
   "phase_1_features_discovered": 0,
   "phase_1_sources_consulted": 0,
+  "phase_1_screenshots_captured": 0,
   "phase_1_timestamp": ""
 }
 ```
@@ -134,7 +170,7 @@ Report to user:
 ```
 Phase 1 complete.
 - Discovered [N] features across [N] categories
-- Gathered [N] reference screenshots
+- Gathered [N] reference screenshots ([N] from web, [N] from live app)
 - Consulted [N] sources
 - [N] high confidence, [N] medium, [N] low
 

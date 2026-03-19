@@ -2,7 +2,7 @@
 
 # ============================================================================
 # app-clone-kit installer
-# Copies phase files, pipeline script, and slash command into target project.
+# Copies phase files and slash commands into target project.
 # ============================================================================
 
 set -e
@@ -70,22 +70,30 @@ else
 fi
 
 mkdir -p "$CMD_DIR"
-cp "$TEMPLATE_DIR/commands/clone.md" "$CMD_DIR/clone.md"
-echo -e "${GREEN}  ✓${NC} Installed /clone command to ${DIM}$CMD_DIR/clone.md${NC}"
+cp "$TEMPLATE_DIR/commands/research-app.md" "$CMD_DIR/research-app.md"
+cp "$TEMPLATE_DIR/commands/build-app.md" "$CMD_DIR/build-app.md"
+echo -e "${GREEN}  ✓${NC} Installed /research-app and /build-app commands to ${DIM}$CMD_DIR/${NC}"
 
-# ---- Install phase files and pipeline script ----
+# ---- Install phase files ----
 CLONE_KIT_DIR="$TARGET_DIR/.clone-kit"
 mkdir -p "$CLONE_KIT_DIR/phases"
 
-for phase_file in "$TEMPLATE_DIR/phases/"*.md; do
-    filename=$(basename "$phase_file")
-    cp "$phase_file" "$CLONE_KIT_DIR/phases/$filename"
+# Copy research/planning phases (active)
+for phase_file in "$TEMPLATE_DIR/phases/"{01,02,03}*.md; do
+    [ -f "$phase_file" ] && cp "$phase_file" "$CLONE_KIT_DIR/phases/$(basename "$phase_file")"
 done
-echo -e "${GREEN}  ✓${NC} Installed 6 phase files to ${DIM}.clone-kit/phases/${NC}"
 
-cp "$TEMPLATE_DIR/pipeline.sh" "$CLONE_KIT_DIR/pipeline.sh"
-chmod +x "$CLONE_KIT_DIR/pipeline.sh"
-echo -e "${GREEN}  ✓${NC} Installed pipeline script to ${DIM}.clone-kit/pipeline.sh${NC}"
+# Copy consolidated build instructions (active)
+cp "$TEMPLATE_DIR/phases/build.md" "$CLONE_KIT_DIR/phases/build.md"
+
+# Copy old build phases as reference
+for phase_file in "$TEMPLATE_DIR/phases/"{04,05,06}*.md; do
+    [ -f "$phase_file" ] || continue
+    filename=$(basename "$phase_file")
+    refname="${filename%.md}.ref.md"
+    cp "$phase_file" "$CLONE_KIT_DIR/phases/$refname"
+done
+echo -e "${GREEN}  ✓${NC} Installed phase files to ${DIM}.clone-kit/phases/${NC}"
 
 # ---- Install skills ----
 if [ -d "$TEMPLATE_DIR/skills" ]; then
@@ -161,5 +169,6 @@ echo ""
 echo -e "${GREEN}  Done!${NC} Start cloning:"
 echo ""
 echo -e "    ${BOLD}claude${NC}"
-echo -e "    ${BOLD}> /clone ${DIM}<app name>${NC}"
+echo -e "    ${BOLD}> /research-app ${DIM}<app name>${NC}"
+echo -e "    ${DIM}Then: /build-app${NC}"
 echo ""

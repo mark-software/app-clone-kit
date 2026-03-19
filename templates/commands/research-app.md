@@ -1,6 +1,6 @@
-# /clone - App Clone Pipeline
+# /research-app - Research and plan an app clone
 
-You are orchestrating a pipeline to clone an existing app. Your job is to handle all research and automation, and only ask the human for genuine preference decisions.
+You are researching an existing app to prepare a build plan. Your job is to handle all research and automation, and only ask the human for genuine preference decisions.
 
 ## What YOU research (never ask the user):
 - Package name (search Play Store / App Store)
@@ -24,7 +24,7 @@ You are orchestrating a pipeline to clone an existing app. Your job is to handle
 
 ### Step 1: Get the app name
 
-If the user typed `/clone AppName`, you have it. If they just typed `/clone`, ask:
+If the user typed `/research-app AppName`, you have it. If they just typed `/research-app`, ask:
 
 "What app do you want to clone?"
 
@@ -90,32 +90,13 @@ When complete:
 
 Look right? Any features to cut? Or say 'continue'."
 
-If approved, proceed.
-
-### Step 7: Hand off to build pipeline
-
-Print:
+If approved:
 
 ```
-Research and planning complete. The build phases need separate Claude Code sessions for context management.
+Research and planning complete.
 
-Exit this session and run:
-
-  ./.clone-kit/pipeline.sh
-
-That handles everything automatically:
-- Scaffolds the project
-- Builds each feature with MCP testing gates
-- Runs integration and polish
-- Tracks progress and supports resume
-
-Or run phases manually in separate sessions:
-
-  Session 1: "Read .clone-kit/phases/04-scaffold.md and execute it. Verify on emulator with mobile MCP."
-  Session 2: "Read .clone-kit/phases/05-build-loop.md and execute build phase 0 from build-queue.json. Test with mobile MCP."
-  Session 3: Same, "build phase 1"
-  ...
-  Final:     "Read .clone-kit/phases/06-integration.md and execute it."
+To build the app, start a new session and run:
+  /build-app
 ```
 
 ## Rules
