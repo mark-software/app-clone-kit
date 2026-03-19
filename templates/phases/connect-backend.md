@@ -218,6 +218,26 @@ If a test fails after 3 fix attempts, note it and move on. Fix during polish.
 - No sensitive data in logs
 - HTTPS only (enforce in network client config)
 
+## Section 9: Update CLAUDE.md
+
+The app now has a backend, auth, and offline-first sync. Update `CLAUDE.md` so future Claude Code sessions know about this architecture.
+
+**Read the existing `CLAUDE.md` first.** Preserve everything — user-written instructions, project conventions, all sections from the build phase. Merge the sections below into the existing file. Do not overwrite anything already there.
+
+Read these files for context:
+- `config.json` — `backend_config` (provider, auth methods, sync strategy)
+- The auth service, sync manager, and API layer code you just wrote
+
+Add or update these sections in `CLAUDE.md`:
+
+1. **Backend & API** — Provider name, base URL pattern, API key management approach (where keys live, how they're loaded), network client library
+2. **Authentication** — Auth methods (email/password, OAuth providers), auth service location, token storage approach (Keychain/EncryptedSharedPrefs/SecureStore), session refresh strategy
+3. **Offline-First Sync** — Architecture overview (local DB is source of truth, background sync to server), sync queue location and persistence, conflict resolution strategy (last-write-wins with timestamps), connectivity monitoring approach, sync triggers (periodic, on-write, pull-to-refresh, app foreground)
+4. **Environment Setup** — Required API keys and where to set them, `.env.example` reference, provider dashboard links for key management
+5. **Known Issues** — Append any backend-related deferred issues to the existing Known Issues section
+
+The updated `CLAUDE.md` should read as documentation for a complete app with a live backend, not a migration log.
+
 ## Completion
 
 ```
