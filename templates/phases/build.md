@@ -308,4 +308,8 @@ FINAL REVIEW (~10-20 min): Open the app and walk through it.
 
 If issues found, describe them:
   "Fix these issues: [list]. Test each with mobile MCP."
+
+Next (optional): start a new session and run:
+  /connect-backend-03
+to add a real backend with auth and offline-first sync.
 ```

@@ -70,9 +70,10 @@ else
 fi
 
 mkdir -p "$CMD_DIR"
-cp "$TEMPLATE_DIR/commands/research-app.md" "$CMD_DIR/research-app.md"
-cp "$TEMPLATE_DIR/commands/build-app.md" "$CMD_DIR/build-app.md"
-echo -e "${GREEN}  ✓${NC} Installed /research-app and /build-app commands to ${DIM}$CMD_DIR/${NC}"
+cp "$TEMPLATE_DIR/commands/research-app-01.md" "$CMD_DIR/research-app-01.md"
+cp "$TEMPLATE_DIR/commands/build-app-locally-02.md" "$CMD_DIR/build-app-locally-02.md"
+cp "$TEMPLATE_DIR/commands/connect-backend-03.md" "$CMD_DIR/connect-backend-03.md"
+echo -e "${GREEN}  ✓${NC} Installed /research-app-01, /build-app-locally-02, /connect-backend-03 commands to ${DIM}$CMD_DIR/${NC}"
 
 # ---- Install phase files ----
 CLONE_KIT_DIR="$TARGET_DIR/.clone-kit"
@@ -85,6 +86,9 @@ done
 
 # Copy consolidated build instructions (active)
 cp "$TEMPLATE_DIR/phases/build.md" "$CLONE_KIT_DIR/phases/build.md"
+
+# Copy backend connection phase
+cp "$TEMPLATE_DIR/phases/connect-backend.md" "$CLONE_KIT_DIR/phases/connect-backend.md"
 
 echo -e "${GREEN}  ✓${NC} Installed phase files to ${DIM}.clone-kit/phases/${NC}"
 
@@ -162,6 +166,7 @@ echo ""
 echo -e "${GREEN}  Done!${NC} Start cloning:"
 echo ""
 echo -e "    ${BOLD}claude${NC}"
-echo -e "    ${BOLD}> /research-app ${DIM}<app name>${NC}"
-echo -e "    ${DIM}Then: /build-app${NC}"
+echo -e "    ${BOLD}> /research-app-01 ${DIM}<app name>${NC}"
+echo -e "    ${DIM}Then: /build-app-locally-02${NC}"
+echo -e "    ${DIM}Then (optional): /connect-backend-03${NC}"
 echo ""

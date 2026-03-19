@@ -1,4 +1,4 @@
-# /research-app - Research and plan an app clone
+# /research-app-01 - Research and plan an app clone
 
 You are researching an existing app to prepare a build plan. Your job is to handle all research and automation, and only ask the human for genuine preference decisions.
 
@@ -25,7 +25,7 @@ You are researching an existing app to prepare a build plan. Your job is to hand
 
 ### Step 1: Get the app name
 
-If the user typed `/research-app AppName`, you have it. If they just typed `/research-app`, ask:
+If the user typed `/research-app-01 AppName`, you have it. If they just typed `/research-app-01`, ask:
 
 "What app do you want to clone?"
 
@@ -99,8 +99,8 @@ If approved:
 ```
 Research and planning complete.
 
-To build the app, start a new session and run:
-  /build-app
+Next: start a new session and run:
+  /build-app-locally-02
 ```
 
 ## Rules

@@ -18,8 +18,9 @@ case "${1:-}" in
         echo ""
         echo "  After install:"
         echo "    claude"
-        echo "    > /research-app <app name>"
-        echo "    > /build-app"
+        echo "    > /research-app-01 <app name>"
+        echo "    > /build-app-locally-02"
+        echo "    > /connect-backend-03  (optional)"
         echo ""
         ;;
     *)
