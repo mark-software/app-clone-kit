@@ -99,7 +99,7 @@ Builds the entire app in a single session using the research output. Run this af
 
 | When | What | Time |
 |------|------|------|
-| Start | Answer 4 preference questions | 2 min |
+| Start | Answer 5 preference questions | 2 min |
 | After Phase 1 | Skim feature inventory | 5 min |
 | After Phase 3 | Skim build queue | 5 min |
 | After build | Walk through the finished app | 10-20 min |
@@ -187,11 +187,11 @@ your-project/
 
 ## Troubleshooting
 
-**Build stopped mid-session:** Start a new Claude Code session and run `/build`. It reads the existing research and builds from scratch.
+**Build stopped mid-session:** Start a new Claude Code session and run `/build-app`. It reads the existing research and builds from scratch.
 
 **Feature X failing after 3 retries:** The build defers it to the integration section. Issues are fixed during the polish pass at the end.
 
-**Want to change tech stack:** Delete the generated source code, then run `/build`. Research and feature map data (Phases 1-3) are stack-agnostic and reusable.
+**Want to change tech stack:** Delete the generated source code, then run `/build-app`. Research and feature map data (Phases 1-3) are stack-agnostic and reusable.
 
 **No mobile MCP / emulator:** The build still works — it falls back to build-only verification (no crashes, no lint errors) instead of visual MCP testing. Results won't be as thorough.
 

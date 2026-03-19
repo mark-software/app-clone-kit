@@ -14,11 +14,12 @@ case "${1:-}" in
         echo ""
         echo "  Usage:"
         echo "    curl -fsSL https://raw.githubusercontent.com/mark-software/app-clone-kit/main/bin/remote-install.sh | bash"
-        echo "    curl -fsSL ... | bash -s -- --global    Install /clone command globally"
+        echo "    curl -fsSL ... | bash -s -- --global    Install commands globally"
         echo ""
         echo "  After install:"
         echo "    claude"
-        echo "    > /clone <app name>"
+        echo "    > /research-app <app name>"
+        echo "    > /build-app"
         echo ""
         ;;
     *)
