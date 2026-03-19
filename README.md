@@ -18,7 +18,7 @@ claude
 > /build-app                   # Build everything (new session)
 ```
 
-That's it. Claude researches the app, asks you 4 preference questions, builds a plan, then builds your app.
+That's it. Claude researches the app, asks you 5 preference questions, builds a plan, then builds your app.
 
 ## What It Does
 
@@ -46,10 +46,7 @@ This copies the slash command and phase files into your project:
     ├── 01-research.md
     ├── 02-decompile.md
     ├── 03-feature-map.md
-    ├── 04-scaffold.ref.md    # Reference
-    ├── 05-build-loop.ref.md  # Reference
-    ├── 06-integration.ref.md # Reference
-    └── build.md              # Active build instructions
+    └── build.md              # Build instructions
 
 .claude/
 └── commands/
@@ -84,7 +81,7 @@ claude
 
 Claude will:
 1. Research the app - package name, URLs, features, screenshots, help docs (you provide nothing)
-2. Ask you 4 questions - tech stack, platform, tier, APK availability
+2. Ask you 5 questions - tech stack, platform, tier, APK availability, optional screenshots
 3. Run research and build the feature map
 4. Show you a summary to skim (~5 min)
 5. Tell you to run `/build-app`

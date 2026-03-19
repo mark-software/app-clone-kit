@@ -86,13 +86,6 @@ done
 # Copy consolidated build instructions (active)
 cp "$TEMPLATE_DIR/phases/build.md" "$CLONE_KIT_DIR/phases/build.md"
 
-# Copy old build phases as reference
-for phase_file in "$TEMPLATE_DIR/phases/"{04,05,06}*.md; do
-    [ -f "$phase_file" ] || continue
-    filename=$(basename "$phase_file")
-    refname="${filename%.md}.ref.md"
-    cp "$phase_file" "$CLONE_KIT_DIR/phases/$refname"
-done
 echo -e "${GREEN}  ✓${NC} Installed phase files to ${DIM}.clone-kit/phases/${NC}"
 
 # ---- Install skills ----
