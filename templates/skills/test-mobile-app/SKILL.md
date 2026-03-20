@@ -69,12 +69,12 @@ FOR EACH feature in feature-map.json:
   Steps:
     1. Navigate to the feature's primary screen (use navigation info from feature map)
     2. Verify screen elements render (based on feature's data_model fields)
-    3. Perform primary action (based on feature's user_stories)
-    4. Verify result
-    5. Test CRUD if applicable (based on data_model entities)
-    6. Test empty state
-    7. Navigate away and back — verify persistence
-    8. Screenshot
+    3. Test EVERY user_stories entry for this feature — not just the primary action.
+       For each user story, perform the described action and verify the expected outcome
+    4. Test CRUD if applicable (based on data_model entities)
+    5. Test empty state
+    6. Navigate away and back — verify persistence
+    7. Screenshot
 ```
 
 Group flows by dependency:
@@ -99,7 +99,8 @@ You are testing the mobile app on device "{device_id}".
 2. Use `mobile_click_on_screen_at_coordinates` with the coordinates from the element list
 3. After each action, take a screenshot to verify the result
 4. If something doesn't work, try once more with fresh element coordinates
-5. Track every bug you find
+5. Test EVERY user story in the test flow — not just the primary action. Each story must be performed and verified
+6. Track every bug you find
 
 ## Bug Report Format
 
@@ -123,16 +124,59 @@ For each bug found, report:
 Return ONLY a structured bug report. No narration.
 ```
 
-### Phase 4: Consolidate Results
+### Phase 4: Interaction Audit
 
-After all agents complete:
+After all feature test flows complete, run an interaction audit on every screen. This catches elements that render but have no wired-up handlers — the most common class of missed bugs.
 
-1. Collect bug reports from each agent
+For each screen in `feature-map.json`, delegate to an agent with this prompt template:
+
+```
+You are auditing interactive elements on device "{device_id}".
+
+## Screen: {screen_name}
+
+Navigate to this screen: {navigation_instructions}
+
+## Instructions
+
+1. Call `mobile_list_elements_on_screen` to get ALL elements
+2. Identify every interactive element: buttons, FABs, icon buttons, list items, text fields, switches, toggles, checkboxes, radio buttons, tabs, bottom nav items, menu items, clickable cards, links
+3. For EACH interactive element:
+   a. Screenshot (before state)
+   b. Tap it using `mobile_click_on_screen_at_coordinates`
+   c. Screenshot (after state)
+   d. Check: did ANYTHING change? (new screen, dialog, keyboard, state toggle, animation, snackbar, selection highlight, expanded content)
+   e. If nothing changed: record as a DEAD ELEMENT bug (severity: major)
+   f. Press back / dismiss to return to the original screen
+   g. Call `mobile_list_elements_on_screen` again to re-establish coordinates (they shift after navigation)
+4. For text fields: tap to verify keyboard appears, then dismiss keyboard
+5. For elements that navigate away: verify the destination screen loads, then navigate back
+
+## Bug Report Format
+
+For each dead element found:
+- **Bug ID**: Sequential number
+- **Screen**: {screen_name}
+- **Element**: Element text/description and type (button, FAB, list item, etc.)
+- **Coordinates**: Where you tapped
+- **Expected**: Element should respond to tap (navigate, toggle, open dialog, etc.)
+- **Actual**: No visible response
+- **Severity**: major
+- **Screenshot**: Before and after screenshots show no change
+
+Return ONLY a structured bug report. If all elements respond correctly, return "All interactive elements verified — no dead elements found."
+```
+
+### Phase 5: Consolidate Results
+
+After all agents complete (both feature flow agents and interaction audit agents):
+
+1. Collect bug reports from each agent (feature flows + interaction audit)
 2. Deduplicate bugs (same root cause across screens)
-3. Categorize by severity
+3. Categorize by severity — dead elements from the interaction audit are major by default
 4. Generate final report
 
-### Phase 5: Output Report
+### Phase 6: Output Report
 
 Write the consolidated report to `docs/qa/YYYY-MM-DD-qa-report.md`:
 

@@ -143,9 +143,36 @@ Work through `build-queue.json` phases in order (phase 0, then 1, then 2, etc.).
 
 **This is not optional.** The goal is a clone, not a loose interpretation. The built UI should be recognizable as the same app to someone who uses the original.
 
+### Code review gate
+
+**MANDATORY: After coding each feature, self-review before testing on emulator.** This catches bugs that visual/emulator testing misses entirely.
+
+#### Wiring checks
+1. **Click handlers exist**: Every Button, FAB, IconButton, clickable card, list item tap, and menu item has an onClick/onPress/onTap that calls a function — not an empty body, not a TODO
+2. **Handlers do something**: Each click handler either navigates, calls a repository/ViewModel method, shows a dialog, or changes state. Trace from the UI element to the actual effect
+3. **Navigation targets exist**: Every navigation call references a route/screen that is implemented (not a placeholder). Arguments are passed correctly
+4. **Forms save**: Every form's save/submit button calls the repository to persist data. Verify the flow: collect field values → validate → call repository → navigate back or show confirmation
+5. **State observation**: Every state variable (loading, error, list data, form fields) is both set by the ViewModel/controller AND observed/collected in the UI. No orphan states
+6. **No stubs**: Search for empty function bodies, TODO comments, and `pass`/`return`/`Unit` stubs in handlers. Every function body must have real logic
+
+#### Logic and correctness checks
+7. **Data flow is complete**: Data written in create/edit flows is the same data read and displayed in list/detail screens. Field names and types match end-to-end (UI → ViewModel → Repository → DB → Repository → ViewModel → UI)
+8. **Filtering and sorting**: If the feature has filters, search, or sort — verify the query/logic is actually applied to the displayed list, not just stored in state
+9. **Delete cascades**: When an entity is deleted, verify related data is also cleaned up (e.g., deleting a category removes or re-assigns items in that category)
+10. **Boundary conditions**: Empty strings, zero values, null/optional fields, maximum-length input — verify these don't cause crashes or silent failures
+11. **Duplicate prevention**: If business logic requires uniqueness (e.g., category names), verify it's enforced
+12. **Date/time handling**: Verify timezone consistency, correct formatting, and that date comparisons work as expected (especially "today" filters, date ranges, relative time displays)
+13. **Callback/lambda captures**: Verify that click handlers inside lists/loops capture the correct item (not always the last item or a stale reference)
+14. **Resource cleanup**: Timers, listeners, coroutine scopes, and subscriptions are cancelled in onDispose/onDestroy/onCleared
+
+#### Quick scan
+15. **Read through every file you wrote for this feature** — look for anything that seems wrong, incomplete, or inconsistent. If something looks off, it probably is
+
+If any check fails, fix it immediately before proceeding to testing.
+
 ### Testing as you go
 
-**MANDATORY: After building each feature, install the updated APK and test on the emulator.** Do not batch features without testing — each feature must be verified before starting the next.
+**MANDATORY: After building each feature (and passing the code review gate), install the updated APK and test on the emulator.** Do not batch features without testing — each feature must be verified before starting the next.
 
 1. Build: `./gradlew assembleDebug` (or equivalent)
 2. Install updated APK on emulator via `mobile_install_app`
@@ -153,11 +180,12 @@ Work through `build-queue.json` phases in order (phase 0, then 1, then 2, etc.).
 4. Navigate to the feature's primary screen
 5. Screenshot: verify UI renders (no crash, correct layout)
 6. Visual comparison gate (see above)
-7. Happy path: perform primary action, verify result
-8. Edit: modify an entry, verify persistence
-9. Delete: remove an entry, verify removal
-10. Empty state: verify empty UI shows correctly
-11. Navigate away and back: verify state persists
+7. **Interaction audit**: Call `mobile_list_elements_on_screen`. For EVERY interactive element (buttons, FABs, list items, text fields, switches, tabs, menu items, clickable cards): tap it, screenshot, verify something changed (navigation, dialog, state change, keyboard, selection). Press back/dismiss to return. Any element that produces no response is a bug — fix it before continuing
+8. **User story coverage**: Test EVERY `user_stories` entry from this feature's `feature-map.json` spec — not just the "primary action". For each story, perform the described action and verify the expected outcome
+9. Edit: modify an entry, verify persistence
+10. Delete: remove an entry with confirmation, verify removal
+11. Empty state: delete all entries, verify empty UI shows correctly with messaging and call-to-action
+12. Navigate away and back: verify state persists
 
 If a feature fails after 3 fix attempts, note the issue and move on. Fix it in Section 4.
 
