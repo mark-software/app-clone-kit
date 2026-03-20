@@ -169,7 +169,7 @@ Work through `build-queue.json` phases in order (phase 0, then 1, then 2, etc.).
 3. **Navigation targets exist**: Every navigation call references a route/screen that is implemented (not a placeholder). Arguments are passed correctly
 4. **Forms save**: Every form's save/submit button calls the repository to persist data. Verify the flow: collect field values → validate → call repository → navigate back or show confirmation
 5. **State observation**: Every state variable (loading, error, list data, form fields) is both set by the ViewModel/controller AND observed/collected in the UI. No orphan states
-6. **No stubs**: Search for empty function bodies, TODO comments, and `pass`/`return`/`Unit` stubs in handlers. Every function body must have real logic
+6. **No stubs**: Search for empty function bodies, TODO comments, and `pass`/`return`/`Unit` stubs in handlers. Every function body must have real logic. This includes "Coming Soon" screens, disabled buttons with no implementation behind them, and features that show a message instead of working. If a feature is in the build queue, it must work
 
 #### Logic and correctness checks
 7. **Data flow is complete**: Data written in create/edit flows is the same data read and displayed in list/detail screens. Field names and types match end-to-end (UI → ViewModel → Repository → DB → Repository → ViewModel → UI)
@@ -203,13 +203,13 @@ If any check fails, fix it immediately before proceeding to testing.
 11. Empty state: delete all entries, verify empty UI shows correctly with messaging and call-to-action
 12. Navigate away and back: verify state persists
 
-If a feature fails after 3 fix attempts, note the issue and move on. Fix it in Section 4.
+If a feature fails after 3 fix attempts, simplify the implementation — reduce scope to a working version rather than leaving a stub. A basic but functional implementation is always better than "coming soon". Every feature in the build queue must be usable when its build phase ends.
 
 ### Regression checks
 
 After completing each build phase, run `/test-mobile-app` to execute a full QA pass. This skill auto-generates test flows from `feature-map.json`, delegates each to agents, and returns a consolidated bug report.
 
-Fix all critical and major bugs before continuing to the next phase. Minor/cosmetic bugs can be deferred to Section 4.
+Fix all critical and major bugs before continuing to the next phase. Minor/cosmetic bugs (visual polish only — spacing, colors, animations) can be deferred to Section 4. Incomplete functionality, placeholder screens, "coming soon" text, and dead buttons are NOT minor — they are major bugs and must be fixed before proceeding.
 
 ## Section 4: Integration & Polish
 
@@ -306,7 +306,8 @@ If onboarding exists in the feature map:
 ### Step 6: Clean up
 
 - Hide or remove seed data loader from default builds
-- Verify no placeholder screens remain
+- Verify no placeholder screens, "coming soon" messages, or stub functionality remain — every feature in the build queue must be fully functional
+- Search codebase for: "coming soon", "placeholder", "not yet", "TODO", "FIXME", "stub" — fix or remove each instance
 - Remove debug logging
 - Resolve or document TODO comments
 
@@ -317,7 +318,7 @@ If onboarding exists in the feature map:
 1. Clean build: `./gradlew clean assembleDebug` (or equivalent for the tech stack)
 2. Install on emulator via `mobile_install_app`
 3. Launch and screenshot to confirm app starts
-4. Run `/test-mobile-app` for a comprehensive automated QA pass across all features. Fix any critical/major bugs found. This step is MANDATORY — do not skip it.
+4. Run `/test-mobile-app` for a comprehensive automated QA pass across all features. Fix any critical/major bugs found. This step is MANDATORY — do not skip it. **Zero tolerance for stubs**: if any feature shows "coming soon", placeholder content, or non-functional UI, it is a critical bug. Do not mark the build complete until every feature in `build-queue.json` is functional.
 
 ### Generate CLAUDE.md
 
