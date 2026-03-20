@@ -64,6 +64,10 @@ Set up a design system that matches the original app's visual identity:
 
 If design tokens weren't extracted (no APK), derive values from the reference screenshots in `research/screenshots/`.
 
+- Ensure all bottom-pinned content (bottom bars, FABs, toolbars, palettes) respects
+  `navigationBarsPadding()` (Android) or safe area insets (iOS/Flutter) for edge-to-edge display.
+  This prevents content from hiding behind system navigation bars.
+
 ### Step 4: Navigation structure
 
 Create the full navigation from `feature-map.json` screens:
@@ -108,8 +112,20 @@ Work through `build-queue.json` phases in order (phase 0, then 1, then 2, etc.).
 1. Wire up data repository calls
 2. Build primary screen UI
 3. Add create/add flow
+3.5. Wire sub-screen results
+   - For every screen reachable FROM this editor (pickers, sub-editors, dialogs),
+     verify the result is passed back via savedStateHandle or equivalent
+   - Common pattern: Editor -> Picker -> Sub-editor -> save -> result flows back to Editor
+   - Specifically check: does the parent screen's state update when the sub-screen completes?
+   - Example bugs this prevents: sub-editor saves but item doesn't appear in parent,
+     picker confirms selection but config doesn't return to the calling editor
 4. Add edit flow
 5. Add delete with confirmation
+   - Delete must be accessible from BOTH:
+     a. Inside the editor (toolbar trash icon or button)
+     b. From the list via long-press context menu (Edit/Delete options)
+   - Shared list card components must support onLongClick parameter
+   - All destructive actions show confirmation or provide visible feedback (snackbar)
 6. Implement special behaviors (timers, calculations, auto-defaults)
 7. Implement gesture interactions (long-press, swipe, drag-to-reorder)
 8. Handle empty state

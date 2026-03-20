@@ -72,9 +72,16 @@ FOR EACH feature in feature-map.json:
     3. Test EVERY user_stories entry for this feature — not just the primary action.
        For each user story, perform the described action and verify the expected outcome
     4. Test CRUD if applicable (based on data_model entities)
-    5. Test empty state
-    6. Navigate away and back — verify persistence
-    7. Screenshot
+    5. CRUD matrix:
+       - CREATE: FAB/add button -> fill form -> save -> verify appears in list
+       - READ: Verify seed data displays with correct fields, badges, counts
+       - UPDATE: Tap item -> edit a field -> save -> verify change persists in list
+       - DELETE: Long-press -> Delete (from list) AND trash icon (from editor) -> verify removed
+       - RESULT WIRING: If create/edit navigates to sub-screens, verify results flow back
+         (e.g., selecting an item in a picker actually adds it to the parent editor's list)
+    6. Test empty state
+    7. Navigate away and back — verify persistence
+    8. Screenshot
 ```
 
 Group flows by dependency:
@@ -121,6 +128,16 @@ For each bug found, report:
 - Date pickers: list elements to find exact OK/Cancel button coordinates
 - Wait briefly after navigation before taking screenshots
 
+## MCP Tool Guidance
+
+- Accessibility tree may desync during rapid tab switches — this is a TOOL LIMITATION, not an app bug.
+  Verify state by BOTH screenshot AND element list. If they conflict, trust the screenshot.
+- After typing text, ALWAYS dismiss keyboard (press BACK) before clicking other UI elements.
+- If a button tap produces NO visible change (no navigation, no state change, no feedback), that IS a bug.
+  Do not move on — report it.
+- "Screen renders" is NOT the same as "screen works". Toggle switches must change state.
+  Dropdowns must open and close. Save buttons must persist data. Test the RESULT, not just the arrival.
+
 Return ONLY a structured bug report. No narration.
 ```
 
@@ -147,8 +164,14 @@ Navigate to this screen: {navigation_instructions}
    c. Screenshot (after state)
    d. Check: did ANYTHING change? (new screen, dialog, keyboard, state toggle, animation, snackbar, selection highlight, expanded content)
    e. If nothing changed: record as a DEAD ELEMENT bug (severity: major)
-   f. Press back / dismiss to return to the original screen
-   g. Call `mobile_list_elements_on_screen` again to re-establish coordinates (they shift after navigation)
+   f. For each element type, verify the SPECIFIC expected feedback:
+      - Buttons: produce visible feedback (navigation, dialog, snackbar, state change)
+      - Toggles/switches: state visibly changes AND persists on re-visit
+      - Save/submit: data persists (navigate away and return to verify)
+      - Search/filter: results update to match query (including partial matches, enum names, hyphenated terms)
+      - Destructive actions (delete, clear, reset): show confirmation OR success feedback (snackbar/toast)
+   g. Press back / dismiss to return to the original screen
+   h. Call `mobile_list_elements_on_screen` again to re-establish coordinates (they shift after navigation)
 4. For text fields: tap to verify keyboard appears, then dismiss keyboard
 5. For elements that navigate away: verify the destination screen loads, then navigate back
 
