@@ -145,7 +145,7 @@ else
 fi
 
 # Install mobile MCP
-if command -v claude &>/dev/null && claude mcp list 2>/dev/null | grep -qi "mobile"; then
+if command -v claude &>/dev/null && claude mcp list -s project 2>/dev/null | grep -qi "mobile"; then
     echo -e "  ${GREEN}✓${NC} Mobile MCP"
 elif ! command -v claude &>/dev/null; then
     echo -e "  ${DIM}○${NC} Mobile MCP (skipped - claude CLI not available)"
@@ -153,7 +153,7 @@ elif [ "$SKIP_MCP" = true ]; then
     echo -e "  ${DIM}○${NC} Mobile MCP (skipped)"
 else
     echo -e "  ${DIM}  Installing mobile-mcp...${NC}"
-    if claude mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest 2>&1; then
+    if claude mcp add -s project mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest 2>&1; then
         echo -e "  ${GREEN}✓${NC} Mobile MCP installed"
     else
         echo -e "  ${RED}✗${NC} Mobile MCP install failed"
