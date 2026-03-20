@@ -81,17 +81,25 @@ Build a dev utility that:
 
 ### Step 6: Verify scaffold
 
-Build and run on emulator (mobile MCP if available, otherwise `./gradlew assembleDebug` or equivalent):
+**MANDATORY: Install and run on emulator.** Build the APK, install it, launch the app, and verify using mobile MCP tools (screenshot, list elements, click). A compile-only check (`assembleDebug`) is NOT sufficient — you MUST see the app running.
 
-1. App launches without crash
-2. Every tab/section is reachable
-3. Placeholder screens render with correct names
-4. Seed data loads and list screens show entries
-5. Shared components render correctly
+1. Build: `./gradlew assembleDebug` (or equivalent)
+2. Install: `mobile_install_app` with the built APK
+3. Launch: `mobile_launch_app` with the package name
+4. Screenshot: `mobile_take_screenshot` — verify the app launched
+5. Navigate to every tab/section — screenshot each one
+6. Verify:
+   - App launches without crash
+   - Every tab/section is reachable
+   - Placeholder screens render with correct names
+   - Seed data loads and list screens show entries
+   - Shared components render correctly
 
-**Do NOT proceed to feature building until verification passes.** Fix issues immediately and re-verify.
+**Do NOT proceed to feature building until verification passes on the emulator.** Fix issues immediately and re-verify. If the emulator is not available, stop and tell the user — do not silently skip testing.
 
 ## Section 3: Build Loop
+
+**CRITICAL BUILD RULE: Every build phase ends with `/test-mobile-app`.** You MUST run the `/test-mobile-app` skill after completing each phase. Do NOT skip this step. Do NOT proceed to the next phase until critical/major bugs are fixed. The compile check (`assembleDebug`) alone tells you nothing — runtime crashes, layout bugs, and navigation failures are only caught on the emulator.
 
 Work through `build-queue.json` phases in order (phase 0, then 1, then 2, etc.). For each phase, build ALL features in that phase before moving to the next.
 
@@ -137,18 +145,19 @@ Work through `build-queue.json` phases in order (phase 0, then 1, then 2, etc.).
 
 ### Testing as you go
 
-After building each feature, verify it works:
+**MANDATORY: After building each feature, install the updated APK and test on the emulator.** Do not batch features without testing — each feature must be verified before starting the next.
 
-1. Build succeeds (`./gradlew assembleDebug` or equivalent)
-2. If mobile MCP is available:
-   - Navigate to the feature's primary screen
-   - Screenshot: verify UI renders (no crash, correct layout)
-   - Visual comparison gate (see above)
-   - Happy path: perform primary action, verify result
-   - Edit: modify an entry, verify persistence
-   - Delete: remove an entry, verify removal
-   - Empty state: verify empty UI shows correctly
-   - Navigate away and back: verify state persists
+1. Build: `./gradlew assembleDebug` (or equivalent)
+2. Install updated APK on emulator via `mobile_install_app`
+3. Launch app via `mobile_launch_app`
+4. Navigate to the feature's primary screen
+5. Screenshot: verify UI renders (no crash, correct layout)
+6. Visual comparison gate (see above)
+7. Happy path: perform primary action, verify result
+8. Edit: modify an entry, verify persistence
+9. Delete: remove an entry, verify removal
+10. Empty state: verify empty UI shows correctly
+11. Navigate away and back: verify state persists
 
 If a feature fails after 3 fix attempts, note the issue and move on. Fix it in Section 4.
 
@@ -262,9 +271,9 @@ If onboarding exists in the feature map:
 ### Final build check
 
 1. Clean build: `./gradlew clean assembleDebug` (or equivalent for the tech stack)
-2. Install on emulator
-3. Run `/test-mobile-app` for a comprehensive automated QA pass across all features. Fix any critical/major bugs found.
-4. If no mobile MCP: manual build verification (no crashes, no lint errors)
+2. Install on emulator via `mobile_install_app`
+3. Launch and screenshot to confirm app starts
+4. Run `/test-mobile-app` for a comprehensive automated QA pass across all features. Fix any critical/major bugs found. This step is MANDATORY — do not skip it.
 
 ### Generate CLAUDE.md
 
