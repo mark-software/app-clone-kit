@@ -1,5 +1,7 @@
 # Build Phase: Single-Session App Build
 
+ALL CODE MUST BE CLEAN, MAINTAINABLE, AND ADHERE TO THE SINGLE RESPONSIBILITY PRINCIPLE. NO EXCEPTIONS.
+
 Build the entire app in one session. Read all context first, then scaffold, build features, integrate, and verify.
 
 ## Section 1: Read Context
