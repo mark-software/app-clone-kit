@@ -143,6 +143,7 @@ Work through `build-queue.json` phases in order (phase 0, then 1, then 2, etc.).
 - Every form handles: validation, required fields, save
 - Use shared components from scaffolding
 - Follow SRP — each class has one reason to change
+- Background code must never launch UI — check permissions at the point of user interaction, fail gracefully in background
 
 ### Visual comparison gate
 
